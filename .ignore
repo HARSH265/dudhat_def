@@ -1,0 +1,23 @@
+# Search-tool ignore file.
+# ripgrep honours .ignore unconditionally — .gitignore is only honoured inside a
+# git repository, and this project has none yet. Without this file, every content
+# search scans 39,580 files in node_modules.
+
+node_modules/
+build/
+dist/
+coverage/
+.cache/
+
+package-lock.json
+*.min.js
+*.map
+
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.svg
+*.ico
+*.pdf
+*.zip

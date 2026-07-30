@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(client/node_modules/**)",
+      "Read(server/node_modules/**)",
+      "Read(**/package-lock.json)",
+      "Read(**/*.png)",
+      "Read(**/*.jpg)",
+      "Read(server/.env)"
+    ]
+  }
+}
