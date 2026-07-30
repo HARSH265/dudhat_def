@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /api
+
+# Uncomment on staging so it cannot compete with production for the same
+# queries. docs/SEO_ARCHITECTURE.md §7
+# User-agent: *
+# Disallow: /
+
+# Added once the sitemap exists (Phase 3).
+# Sitemap: https://www.dhudhatdef.com/sitemap.xml

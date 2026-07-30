@@ -3,10 +3,13 @@ import { FaLock, FaBoxOpen, FaShieldAlt, FaRecycle } from "react-icons/fa";
 import ProductCard from "../components/ProductCard";
 import FeatureCard from "../components/FeatureCard";
 
-import can10L from "../assets/images/packaging/pack-10l.png";
-import can20L from "../assets/images/packaging/pack-20l.png";
-import drum210L from "../assets/images/packaging/pack-210l.png";
-import ibc1000L from "../assets/images/packaging/pack-1000l.png";
+// The packaging/* images were byte-identical duplicates of these product
+// images (verified by checksum), so the duplicates were removed.
+// See docs/SEED_DATA.md §1.
+import can10L from "../assets/images/products/can-10l.png";
+import can20L from "../assets/images/products/can-20l.png";
+import drum210L from "../assets/images/products/drum-210l.png";
+import ibc1000L from "../assets/images/products/ibc-1000l.png";
 
 const Packaging = () => {
   const packages = [
@@ -26,7 +29,7 @@ const Packaging = () => {
   return (
     <section className="section products-page">
       <div className="container">
-        <h2 className="section-title">Our Packaging</h2>
+        <h1 className="section-title">Our Packaging</h1>
         <p className="section-subtitle">
           Available in multiple packaging options to suit your needs.
         </p>

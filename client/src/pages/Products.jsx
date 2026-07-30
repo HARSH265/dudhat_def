@@ -26,7 +26,7 @@ const Products = () => {
   return (
     <section className="section products-page">
       <div className="container">
-        <h2 className="section-title">Our Products</h2>
+        <h1 className="section-title">Our Products</h1>
         <p className="section-subtitle">High quality DEF for every need</p>
 
         <div className="product-grid">

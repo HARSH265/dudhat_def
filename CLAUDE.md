@@ -88,6 +88,6 @@ This repo has 39,580 files in `node_modules` and 8.3MB of images. Unfiltered sea
 
 ## Current State — Quick Facts
 
-CRA (not Vite) · JavaScript backend (not TypeScript) · no React Query, Tailwind, Cloudinary, or tests · **no git repository** · 2 API endpoints · 1 collection · content hardcoded in all 8 pages.
+CRA (not Vite) · JavaScript backend (not TypeScript) · no React Query, Tailwind, Cloudinary, or tests · 1 API endpoint · 1 collection · content hardcoded in all 8 pages.
 
-`GET /api/contact` currently returns all lead PII to anonymous callers — `server/routes/contactRoutes.js:6`. First item in `docs/IMPLEMENTATION_ROADMAP.md` Phase 0.
+**Phase 0 is complete** — see `docs/PROJECT_INDEX.md` §5. Next up is Phase 1 (backend foundation) in `docs/IMPLEMENTATION_ROADMAP.md`.

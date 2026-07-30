@@ -19,7 +19,13 @@ const Navbar = () => {
     <header className="navbar">
       <div className="navbar-container">
         <NavLink to="/" className="navbar-logo">
-          <img src={logo} alt="Dhudhat DEF Logo" className="logo-icon" />
+          <img
+            src={logo}
+            alt="Dhudhat DEF Logo"
+            className="logo-icon"
+            width="1774"
+            height="887"
+          />
           <div className="logo-text">
             <span className="logo-title">
               DHUDHAT <span className="logo-def">DEF</span>

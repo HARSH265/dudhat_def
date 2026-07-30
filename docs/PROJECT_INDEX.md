@@ -92,16 +92,34 @@ Read a source file only when changing it. This table replaces exploratory readin
 
 Facts already established. Trust these instead of re-investigating.
 
-**Stack:** CRA 5.0.1 (not Vite), JavaScript backend (not TypeScript), no React Query, no Tailwind, no Cloudinary, no tests, **no git repository**.
+**Phase 0 is complete.** See §5 for what it changed.
 
-**Live security issue:** `GET /api/contact` returns all lead PII unauthenticated — `routes/contactRoutes.js:6`.
+**Stack:** CRA 5.0.1 (not Vite), JavaScript backend (not TypeScript), no React Query, no Tailwind, no Cloudinary, no tests.
 
-**Rule violations in current code:** content hardcoded in all 8 pages · `Products.jsx`/`Packaging.jsx` and `About.jsx`/`Sustainability.jsx` are near-duplicates · business logic in `contactController`.
+**Rule violations in current code:** content hardcoded in all 8 pages · `Products.jsx`/`Packaging.jsx` and `About.jsx`/`Sustainability.jsx` are near-duplicates · validation + business logic + persistence all inside `contactController.submitContact`.
 
-**Data defects:** `Products.jsx` `subtitle` values are misaligned (10L Can → `"18L"`, 20L Can → `"10L"`, 210L Drum → `"350L"`) · the 4 `packaging/*.png` files are byte-identical to the 4 `products/*.png` files · `hero-truck.png` is unreferenced.
+**Data defects:** `Products.jsx` `subtitle` values are misaligned (10L Can → `"18L"`, 20L Can → `"10L"`, 210L Drum → `"350L"`). Do not migrate them as volumes.
 
 **CSS:** desktop-first (9 `max-width` queries, 6 ad-hoc breakpoints), `!important` at `App.css:551` and `App.css:599`, container width split 1300px/1400px.
 
-**Missing from `client/public/`:** `robots.txt`, favicon, `manifest.json`, `sitemap.xml`.
+**Missing from `client/public/`:** favicon, `manifest.json`, `sitemap.xml`.
 
-**Placeholders in production code:** phone `+91 12345 67890`, address `Plot No. ___, MIDC, ________`, 4 social links pointing to `/`.
+**Placeholders in production code:** phone `+91 12345 67890`, address `Plot No. ___, MIDC, ________`, 6 dead footer links (Privacy, Terms, 4 social) all pointing to `/`. Deferred to Phase 3 — fixing them changes rendered output, which the design freeze forbids without approval.
+
+---
+
+## 5. Phase 0 — Done
+
+| Change | Where |
+|---|---|
+| `GET /api/contact` removed (was exposing all lead PII) | `routes/contactRoutes.js`, `controllers/contactController.js` |
+| Git repository initialised; remote `origin` → `HARSH265/dudhat_def` | — |
+| `helmet`, CORS origin allowlist, 100kb body limit, `trust proxy`, `x-powered-by` off, CORS error handler | `server/server.js` |
+| Rate limiting — 5/IP/hour on lead capture, 300/15min global | `server/middleware/rateLimit.js` |
+| `robots.txt` added | `client/public/` |
+| `h1` added to all 8 pages (was 1 of 8) | `pages/*.jsx` + 3 selectors in `App.css` |
+| `width`/`height` on all rendered images; `height: auto` on the global `img` rule | 7 component/page files, `index.css` |
+| `hero-truck.png` + 4 duplicate `packaging/*.png` deleted (742KB) | `assets/images/` |
+| `.env.example` populated (20 vars) | `server/` |
+
+**Outstanding from Phase 0:** favicon (needs a real 32×32 + 180×180 asset) · `CLIENT_URL`/`ADMIN_URL` in `server/.env` · credential rotation and Search Console verification (owner-side).

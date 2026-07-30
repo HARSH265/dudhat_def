@@ -50,7 +50,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <img src={isoBadge} className="iso-badge" alt="ISO 22241 Compliant" />
+        <img
+          src={isoBadge}
+          className="iso-badge"
+          alt="ISO 22241 Compliant"
+          width="215"
+          height="140"
+        />
       </section>
 
       {/* FEATURE STRIP */}

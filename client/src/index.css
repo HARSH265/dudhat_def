@@ -26,6 +26,10 @@ ul {
 
 img {
   max-width: 100%;
+  /* Required alongside the width/height attributes on <img>. Those attributes
+     reserve layout space (preventing CLS); height:auto keeps the aspect ratio
+     when max-width shrinks the image on smaller screens. */
+  height: auto;
   display: block;
 }
 

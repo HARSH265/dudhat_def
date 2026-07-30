@@ -29,7 +29,7 @@ const WhyDef = () => {
     <>
       <section className="section why-def-page">
         <div className="container">
-          <h2 className="section-title">Why DEF is Essential?</h2>
+          <h1 className="section-title">Why DEF is Essential?</h1>
           <p className="section-subtitle">
             DEF is a critical solution used in SCR (Selective Catalytic
             Reduction) systems to reduce harmful nitrogen oxide (NOx)

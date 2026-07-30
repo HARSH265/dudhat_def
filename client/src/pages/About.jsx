@@ -16,10 +16,10 @@ const About = () => {
       <div className="container about-grid">
         <div className="about-text">
           <span className="page-tag">ABOUT US</span>
-          <h2>
+          <h1>
             Committed to Purity. <br />
             Driven by Performance.
-          </h2>
+          </h1>
           <p>
             Dhudhat Industries Private Limited is committed to manufacturing
             high quality Diesel Exhaust Fluid (DEF) that meets global
@@ -39,7 +39,12 @@ const About = () => {
         </div>
 
         <div className="about-image">
-          <img src={facilityImage} alt="Dhudhat DEF Manufacturing Facility" />
+          <img
+            src={facilityImage}
+            alt="Dhudhat DEF Manufacturing Facility"
+            width="1662"
+            height="946"
+          />
         </div>
       </div>
     </section>

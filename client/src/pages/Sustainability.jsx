@@ -32,9 +32,9 @@ const Sustainability = () => {
       <div className="container about-grid">
         <div className="about-text">
           <span className="page-tag">SUSTAINABILITY</span>
-          <h2>
+          <h1>
             Driving Cleaner <br /> Tomorrow, Today.
-          </h2>
+          </h1>
           <p>
             At Dhudhat DEF, sustainability is at the core of everything we
             do. From manufacturing to packaging, we're committed to reducing
@@ -47,7 +47,12 @@ const Sustainability = () => {
         </div>
 
         <div className="about-image">
-          <img src={sustainabilityImage} alt="Dhudhat DEF Sustainability" />
+          <img
+            src={sustainabilityImage}
+            alt="Dhudhat DEF Sustainability"
+            width="1662"
+            height="946"
+          />
         </div>
       </div>
 

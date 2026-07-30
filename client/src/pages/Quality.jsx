@@ -16,7 +16,7 @@ const Quality = () => {
       <section className="section quality-page">
         <div className="container quality-grid">
           <div className="quality-text">
-            <h2>Quality You Can Trust</h2>
+            <h1>Quality You Can Trust</h1>
             <p>
               We follow strict quality control at every stage to ensure
               purity, performance and reliability.
@@ -35,7 +35,12 @@ const Quality = () => {
           </div>
 
           <div className="quality-image">
-            <img src={labImage} alt="Quality Testing Laboratory" />
+            <img
+              src={labImage}
+              alt="Quality Testing Laboratory"
+              width="1508"
+              height="1043"
+            />
           </div>
         </div>
       </section>

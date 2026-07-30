@@ -7,7 +7,7 @@ const Contact = () => {
     <section className="section contact-page">
       <div className="container contact-grid">
         <div className="contact-info">
-          <h2>Get In Touch</h2>
+          <h1>Get In Touch</h1>
           <p>
             We are here to answer your questions and support your business.
           </p>

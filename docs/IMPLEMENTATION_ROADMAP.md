@@ -36,7 +36,21 @@ Phases 0–2 are backend-and-admin work that does not touch the public site at a
 
 ---
 
-## 2. Phase 0 — Stabilise
+## 2. Phase 0 — Stabilise ✅ COMPLETE
+
+Delivered. Per-change detail in [PROJECT_INDEX.md](PROJECT_INDEX.md) §5.
+
+**Scope corrections found during execution:**
+- The `h1` gap was **7 pages, not 3**. Four of them (`About`, `Quality`, `Contact`, `Sustainability`) were styled by element selector, so `App.css` needed matching updates or the swap would have broken their styling.
+- The dead footer links were **6, not 3** (Privacy, Terms, 4 social).
+- `index.css` had `max-width: 100%` with no `height: auto`. Adding `width`/`height` attributes without also adding it would have distorted every image below its intrinsic width.
+- 0.9's footer-link fix was **deferred to Phase 3**. Every available fix changes rendered output, which the design freeze forbids, and there are no real URLs to point at. [SEED_DATA.md](SEED_DATA.md) §2 already routes social URLs through settings.
+
+**Carried forward:** favicon (needs a real icon asset) · `CLIENT_URL`/`ADMIN_URL` in `server/.env` · owner-side credential rotation (0.3) and Search Console verification (0.7).
+
+---
+
+### Original scope
 
 **Nothing else starts until this is done.** Roughly one working day.
 

@@ -12,7 +12,14 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-col footer-brand">
           <div className="footer-logo">
-            <img src={logo} alt="Dhudhat DEF Logo" className="logo-icon" />
+            <img
+              src={logo}
+              alt="Dhudhat DEF Logo"
+              className="logo-icon"
+              width="1774"
+              height="887"
+              loading="lazy"
+            />
             <div className="logo-text">
               <span className="logo-title">
                 DHUDHAT <span className="logo-def">DEF</span>
