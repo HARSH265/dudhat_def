@@ -1,6 +1,16 @@
-const mongoose = require("mongoose");
+import mongoose, { Schema, type Document, type Model } from "mongoose";
 
-const contactSchema = new mongoose.Schema(
+export interface IContact extends Document {
+  name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  message: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const contactSchema = new Schema<IContact>(
   {
     name: {
       type: String,
@@ -33,4 +43,11 @@ const contactSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Contact", contactSchema);
+// Superseded by `leads` in Phase 1D. Kept read-compatible for the migration.
+// docs/DATABASE_ARCHITECTURE.md §8 (M1)
+export const Contact: Model<IContact> = mongoose.model<IContact>(
+  "Contact",
+  contactSchema
+);
+
+export default Contact;

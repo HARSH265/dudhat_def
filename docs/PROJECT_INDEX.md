@@ -75,16 +75,22 @@ Read a source file only when changing it. This table replaces exploratory readin
 | `pages/*.jsx` | 8 pages, each with content hardcoded in local arrays | Migrating that page to CMS |
 | `assets/images/` | 14 PNGs, 8.3MB, unoptimised | Never read — reference by path |
 
-### `server/` — API (Express, 2 endpoints)
+### `server/` — API (Express + TypeScript, 1 endpoint)
+
+Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run build && npm start`. `npm run typecheck` for types only.
 
 | Path | Contains | Read when |
 |---|---|---|
-| `server.js` | Express bootstrap, `cors()` unrestricted, route mounting | Middleware work |
-| `config/db.js` | Mongoose connect; `process.exit(1)` on failure | Connection work |
-| `models/Contact.js` | The only schema — 5 fields, no indexes | Lead model work |
-| `controllers/contactController.js` | `submitContact` + `getContacts`; validation + logic + persistence in one place | Lead endpoint work |
-| `routes/contactRoutes.js` | `POST /` and `GET /` | Routing work |
-| `.env.example` | Env var reference | Setting up |
+| `src/server.ts` | Bootstrap: connect DB, listen, graceful shutdown | Startup/shutdown work |
+| `src/app.ts` | Express assembly: helmet, CORS allowlist, body limits, routes, 404, error handler | Middleware work |
+| `src/config/env.ts` | Validated env access; throws a named error on a missing required var | Adding an env var |
+| `src/config/db.ts` | Mongoose connect, pool options, lifecycle listeners, `sanitizeFilter` | Connection work |
+| `src/models/Contact.ts` | The only schema — 5 fields, no indexes. Superseded by `leads` in 1D | Lead model work |
+| `src/controllers/contactController.ts` | `submitContact`; still validation + logic + persistence in one place | Lead endpoint work |
+| `src/routes/contactRoutes.ts` | `POST /` only | Routing work |
+| `src/middleware/rateLimit.ts` | `leadLimiter`, `globalLimiter` | Rate limit work |
+| `tsconfig.json` | `node16` modules, `strict`, `noUncheckedIndexedAccess` | Compiler config |
+| `.env.example` | All 20 env vars, grouped by phase | Setting up |
 
 ---
 
@@ -94,7 +100,9 @@ Facts already established. Trust these instead of re-investigating.
 
 **Phase 0 is complete.** See §5 for what it changed.
 
-**Stack:** CRA 5.0.1 (not Vite), JavaScript backend (not TypeScript), no React Query, no Tailwind, no Cloudinary, no tests.
+**Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, no React Query, no Tailwind, no Cloudinary, no tests.
+
+**Toolchain notes worth not rediscovering:** TypeScript 7.0.2 is the native port — `ts-node` is incompatible with it (targets the TS 5.x API) and `tsx` needs an esbuild binary whose postinstall is blocked here. Build is plain `tsc`. `moduleResolution: node10` was removed in TS 7; use `node16`. Node 24 can run `.ts` natively if a loader is ever needed.
 
 **Rule violations in current code:** content hardcoded in all 8 pages · `Products.jsx`/`Packaging.jsx` and `About.jsx`/`Sustainability.jsx` are near-duplicates · validation + business logic + persistence all inside `contactController.submitContact`.
 
@@ -122,4 +130,28 @@ Facts already established. Trust these instead of re-investigating.
 | `hero-truck.png` + 4 duplicate `packaging/*.png` deleted (742KB) | `assets/images/` |
 | `.env.example` populated (20 vars) | `server/` |
 
-**Outstanding from Phase 0:** favicon (needs a real 32×32 + 180×180 asset) · `CLIENT_URL`/`ADMIN_URL` in `server/.env` · credential rotation and Search Console verification (owner-side).
+**Outstanding from Phase 0:** favicon (needs a real 32×32 + 180×180 asset) · credential rotation and Search Console verification (owner-side).
+
+---
+
+## 6. Phase 1A — Done
+
+Server converted to TypeScript, `src/` → `dist/`.
+
+| Change | Where |
+|---|---|
+| 6 JS files → 8 TS files under `src/`; `strict` + `noUncheckedIndexedAccess` | `server/src/` |
+| Express assembly split out of the bootstrap, so the app is constructible without listening (needed for tests) | `src/app.ts`, `src/server.ts` |
+| Validated env access; missing required vars throw a named error at boot | `src/config/env.ts` |
+| `connectDB` no longer calls `process.exit(1)` — it rejects and the bootstrap reports. Pool options and lifecycle listeners added | `src/config/db.ts` |
+| `strictQuery` + `sanitizeFilter` on; `autoIndex` off in production | `src/config/db.ts` |
+| Graceful shutdown on SIGTERM/SIGINT with a 10s backstop | `src/server.ts` |
+| JSON 404 handler (was falling through to Express's HTML default) | `src/app.ts` |
+| `X-Frame-Options: DENY` (helmet defaults to SAMEORIGIN) | `src/app.ts` |
+| Lead response returns `{ id }` instead of the whole document | `src/controllers/contactController.ts` |
+
+**Verified at runtime:** Atlas connects · `GET /` 200 · `GET /api/contact` 404 · `POST /api/contact` returns the byte-identical legacy 400 message · HSTS, nosniff, frameguard, and RateLimit headers present · `x-powered-by` absent.
+
+**Known gap carried to 1B:** `submitContact` still does validation, logic, and persistence in one function.
+
+**Flagged for 1B:** `express@4` with async handlers requires explicit `try/catch` or a wrapper — Express 4 does not forward async rejections. Either add `asyncHandler` or upgrade to Express 5, which handles them natively. Decide before writing services.
