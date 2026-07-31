@@ -1,4 +1,4 @@
-# Dhudhat DEF
+# Dudhat DEF
 
 MERN brochure site being converted into a CMS-driven lead generation platform.
 `client/` React (CRA) · `server/` Express + MongoDB · `docs/` architecture.

@@ -11,6 +11,13 @@ interface ValidateOptions {
   missingFieldMessage?: string;
 }
 
+function toFieldErrors(issues: readonly { path: PropertyKey[]; message: string }[]): FieldError[] {
+  return issues.map((issue) => ({
+    field: issue.path.map(String).join(".") || "body",
+    message: issue.message,
+  }));
+}
+
 /**
  * Validates and REPLACES req.body with the parsed result. Unknown keys are
  * stripped rather than passed through, which is what stops mass assignment:
@@ -26,10 +33,7 @@ export function validateBody<T>(
     const result = schema.safeParse(req.body ?? {});
 
     if (!result.success) {
-      const errors: FieldError[] = result.error.issues.map((issue) => ({
-        field: issue.path.join(".") || "body",
-        message: issue.message,
-      }));
+      const errors = toFieldErrors(result.error.issues);
 
       // Preserve the legacy 400 copy ONLY when a required field is genuinely
       // absent or empty. ContactForm.jsx renders res.data.message directly.
@@ -65,4 +69,35 @@ export function validateBody<T>(
     req.body = result.data;
     next();
   };
+}
+
+/**
+ * Validates req.query. The parsed result is stashed on res.locals rather than
+ * assigned back to req.query — Express 5 makes req.query a getter, and
+ * writing to it there throws. Keeping the parsed copy separate means this
+ * survives that upgrade.
+ */
+export function validateQuery<T>(schema: ZodType<T>) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    const result = schema.safeParse(req.query ?? {});
+
+    if (!result.success) {
+      const errors = toFieldErrors(result.error.issues);
+      next(
+        AppError.badRequest(
+          errors[0]?.message ?? "Invalid query parameters.",
+          errors
+        )
+      );
+      return;
+    }
+
+    res.locals["query"] = result.data;
+    next();
+  };
+}
+
+/** Typed accessor for whatever validateQuery parsed. */
+export function query<T>(res: Response): T {
+  return res.locals["query"] as T;
 }

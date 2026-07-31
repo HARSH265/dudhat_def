@@ -190,3 +190,31 @@ npm run migrate:leads                     contacts -> leads (idempotent)
 **Outstanding:** `JWT_ACCESS_SECRET` and `JWT_REFRESH_SECRET` are not in `server/.env` — development falls back to ephemeral secrets with a startup warning, so sessions do not survive a restart. Production **throws** without them.
 
 **Not built in Phase 1** (deferred to Phase 2 with the admin panel): lead list/detail/update endpoints, password reset, `logout-all`, `maintenanceGuard`.
+
+---
+
+## 8. Phase 2A — Done
+
+Lead management API. Closes all three Phase 1 deferrals (M4, M5, L4).
+
+| Added | Notes |
+|---|---|
+| `GET/POST /admin/leads`, `GET/PATCH/DELETE /admin/leads/:id` | List with filters, search, pagination; detail with timeline |
+| `POST /admin/leads/:id/notes` · `/assign` · `/spam` | Every mutation writes a `leadactivities` entry |
+| `GET /admin/leads/export` | CSV, capped at 5000 rows, rate-limited 5/hour, audit-logged with row count |
+| `GET /admin/dashboard` | The four KPI cards + status/source breakdowns + daily series |
+| `GET/PATCH /admin/auth/users/:id/status`, `/role`, `GET /users` | User management with escalation guards |
+| `POST /admin/auth/logout-all` | Closes L4 |
+| `validateQuery` + `query()` helpers | Parsed query stashed on `res.locals`, not `req.query` — Express 5 makes that a getter |
+
+**M4 now enforced.** `STATUS_TRANSITIONS` is consulted in `leadAdmin.service.ts`. Verified: `new → won` returns 409 naming the allowed targets; `→ lost` without a reason returns 400; `lost → contacted` returns 409 as terminal. `firstContactedAt` and `closedAt` are stamped automatically.
+
+**M5 now enforced.** Self-role-change and self-deactivation are blocked, and a last-active-superadmin cannot be demoted or deactivated. Note the precedence: the self-check fires first, so in a single-superadmin deployment that is the guard doing the work.
+
+**Role boundaries verified:** `editor` gets 403 on lead routes, and assigning a lead *to* an editor returns 400 — content roles hold no customer contact data.
+
+**CSV formula injection guarded:** cells beginning `= + - @` are apostrophe-prefixed. Confirmed on the phone column, which starts with `+`.
+
+**Known gap:** `productViews` on the dashboard returns `null` until `pageviews` arrives with the catalogue in 2C. Returning a fabricated number would be worse.
+
+**Validation note worth knowing:** the lead `name` pattern rejects digits, so `"Buyer 1"` is a 400. Intentional, but it surprises when writing test data.

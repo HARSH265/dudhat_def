@@ -27,5 +27,9 @@ export const createUserSchema = z
   })
   .strip();
 
+export const setUserStatusSchema = z.object({ isActive: z.boolean() }).strip();
+
+export const setUserRoleSchema = z.object({ role: z.enum(ROLES) }).strip();
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type CreateUserInput = z.infer<typeof createUserSchema>;

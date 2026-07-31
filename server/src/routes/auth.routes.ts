@@ -5,7 +5,12 @@ import { authenticate } from "../middleware/authenticate";
 import { authorize } from "../middleware/authorize";
 import { validateBody } from "../middleware/validate";
 import { asyncHandler } from "../utils/asyncHandler";
-import { createUserSchema, loginSchema } from "../validators/auth.validator";
+import {
+  createUserSchema,
+  loginSchema,
+  setUserRoleSchema,
+  setUserStatusSchema,
+} from "../validators/auth.validator";
 
 const router = Router();
 
@@ -34,14 +39,38 @@ router.post("/logout", asyncHandler(authController.logout));
 
 // --- Authenticated ---
 router.get("/me", authenticate, asyncHandler(authController.me));
+router.post("/logout-all", authenticate, asyncHandler(authController.logoutAll));
 
-// User creation is superadmin-only. docs/ADMIN_PANEL_SPECIFICATION.md §4
+// User management is superadmin-only. docs/ADMIN_PANEL_SPECIFICATION.md §4
+router.get(
+  "/users",
+  authenticate,
+  authorize("superadmin", "admin"),
+  asyncHandler(authController.listUsers)
+);
+
 router.post(
   "/users",
   authenticate,
   authorize("superadmin"),
   validateBody(createUserSchema),
   asyncHandler(authController.createUser)
+);
+
+router.patch(
+  "/users/:id/status",
+  authenticate,
+  authorize("superadmin"),
+  validateBody(setUserStatusSchema),
+  asyncHandler(authController.setUserStatus)
+);
+
+router.patch(
+  "/users/:id/role",
+  authenticate,
+  authorize("superadmin"),
+  validateBody(setUserRoleSchema),
+  asyncHandler(authController.setUserRole)
 );
 
 export default router;

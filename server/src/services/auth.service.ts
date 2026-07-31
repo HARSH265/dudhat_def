@@ -172,6 +172,97 @@ export const authService = {
     return refreshTokenRepository.revokeAllForUser(userId);
   },
 
+  /**
+   * Phase 1 review M5: the guard was documented in
+   * docs/ADMIN_PANEL_SPECIFICATION.md §5.13 and a helper existed for it, but
+   * nothing called it. Locking every superadmin out of the panel is
+   * unrecoverable without database access.
+   */
+  async setUserStatus(
+    targetId: string,
+    isActive: boolean,
+    actor: { userId: Types.ObjectId }
+  ): Promise<IUser> {
+    const target = await userRepository.findById(targetId);
+    if (!target) throw AppError.notFound("User not found.");
+
+    if (!isActive && target.role === "superadmin") {
+      const remaining = await userRepository.countActiveSuperadmins();
+      if (remaining <= 1) {
+        throw AppError.conflict(
+          "This is the last active superadmin and cannot be deactivated.",
+          ErrorCode.RESOURCE_IN_USE
+        );
+      }
+    }
+
+    if (target._id.equals(actor.userId) && !isActive) {
+      throw AppError.badRequest("You cannot deactivate your own account.");
+    }
+
+    const updated = await userRepository.setActive(target._id, isActive);
+    if (!updated) throw AppError.notFound("User not found.");
+
+    // Deactivation must take effect immediately, not when the access token
+    // happens to expire.
+    if (!isActive) {
+      await refreshTokenRepository.revokeAllForUser(target._id);
+    }
+
+    await auditService.record({
+      userId: actor.userId,
+      action: "update",
+      entityType: "user",
+      entityId: target._id,
+      changes: { isActive: { from: target.isActive, to: isActive } },
+    });
+
+    return updated;
+  },
+
+  async setUserRole(
+    targetId: string,
+    role: Role,
+    actor: { userId: Types.ObjectId }
+  ): Promise<IUser> {
+    const target = await userRepository.findById(targetId);
+    if (!target) throw AppError.notFound("User not found.");
+
+    if (target._id.equals(actor.userId)) {
+      throw AppError.badRequest("You cannot change your own role.");
+    }
+
+    if (target.role === "superadmin" && role !== "superadmin") {
+      const remaining = await userRepository.countActiveSuperadmins();
+      if (remaining <= 1) {
+        throw AppError.conflict(
+          "This is the last active superadmin and cannot be demoted.",
+          ErrorCode.RESOURCE_IN_USE
+        );
+      }
+    }
+
+    const updated = await userRepository.setRole(target._id, role);
+    if (!updated) throw AppError.notFound("User not found.");
+
+    // A role change alters permissions; existing sessions must not outlive it.
+    await refreshTokenRepository.revokeAllForUser(target._id);
+
+    await auditService.record({
+      userId: actor.userId,
+      action: "update",
+      entityType: "user",
+      entityId: target._id,
+      changes: { role: { from: target.role, to: role } },
+    });
+
+    return updated;
+  },
+
+  async listUsers(): Promise<IUser[]> {
+    return userRepository.listAll();
+  },
+
   async createUser(data: {
     name: string;
     email: string;

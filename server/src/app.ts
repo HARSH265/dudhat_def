@@ -11,6 +11,7 @@ import { env } from "./config/env";
 import { logger } from "./config/logger";
 import contactRoutes from "./routes/contactRoutes";
 import authRoutes from "./routes/auth.routes";
+import adminRoutes from "./routes/admin";
 import { leadLimiter, globalLimiter } from "./middleware/rateLimit";
 import { requestId } from "./middleware/requestId";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
@@ -94,6 +95,7 @@ export function createApp(): Application {
   // Versioned API.
   app.use("/api/v1/leads", leadLimiter, contactRoutes);
   app.use("/api/v1/admin/auth", authRoutes);
+  app.use("/api/v1/admin", adminRoutes);
 
   app.get("/", (_req: Request, res: Response) => {
     res.send("Dudhat DEF API is running...");

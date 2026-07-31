@@ -40,4 +40,16 @@ export const userRepository = {
   async countActiveSuperadmins(): Promise<number> {
     return User.countDocuments({ role: "superadmin", isActive: true });
   },
+
+  async setActive(id: Types.ObjectId, isActive: boolean): Promise<IUser | null> {
+    return User.findByIdAndUpdate(id, { $set: { isActive } }, { new: true });
+  },
+
+  async setRole(id: Types.ObjectId, role: Role): Promise<IUser | null> {
+    return User.findByIdAndUpdate(id, { $set: { role } }, { new: true });
+  },
+
+  async listAll(): Promise<IUser[]> {
+    return User.find().sort({ createdAt: -1 });
+  },
 };
