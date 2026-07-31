@@ -152,6 +152,40 @@ Server converted to TypeScript, `src/` → `dist/`.
 
 **Verified at runtime:** Atlas connects · `GET /` 200 · `GET /api/contact` 404 · `POST /api/contact` returns the byte-identical legacy 400 message · HSTS, nosniff, frameguard, and RateLimit headers present · `x-powered-by` absent.
 
-**Known gap carried to 1B:** `submitContact` still does validation, logic, and persistence in one function.
+---
 
-**Flagged for 1B:** `express@4` with async handlers requires explicit `try/catch` or a wrapper — Express 4 does not forward async rejections. Either add `asyncHandler` or upgrade to Express 5, which handles them natively. Decide before writing services.
+## 7. Phase 1B–1D — Done
+
+**1B — layering, errors, validation.** Controller → Service → Repository split. Typed `AppError` + single central error handler. `asyncHandler` wrapper (Express 4 does not forward async rejections). zod validation as middleware, unknown keys **stripped** — verified that `role` in a request body does not reach the document. Honeypot accepted with 201 and discarded. Full middleware stack in documented order. pino with a redaction list covering credentials and lead PII.
+
+**1C — auth, RBAC, audit.** `User` / `RefreshToken` / `ActivityLog`. bcryptjs cost 12. Access token 15m in the body; refresh token in an HttpOnly, SameSite=Strict, path-scoped cookie, rotated on use with reuse detection. Per-account lockout + per-IP throttle. Enumeration resistance verified. `authenticate` re-reads the user each request so deactivation takes effect immediately. `npm run seed:admin` prints a one-time generated password.
+
+**1D — leads, activities, settings.** `Lead` (full schema, 9 indexes, status state machine), `LeadActivity` (append-only), `Settings` (singleton), `Counter` (atomic lead numbers — never `countDocuments`). Lead capture now writes a `Lead` + a `created` activity. Spam scoring flags rather than blocks.
+
+### Scripts
+
+```
+npm run seed:admin -- <email> "<name>"    create the first superadmin
+npm run seed:settings                     seed the settings singleton
+npm run migrate:leads                     contacts -> leads (idempotent)
+```
+
+### Bug found during 1C testing
+
+`revokeAllForUser` filtered on `{ revokedAt: { $exists: false } }`. Mongoose casts that operator object against the Date path and throws, so the query failed and **reuse detection never revoked anything** — a stolen refresh token would have kept working. Now filters on `revokedAt: null`. Note `$gte` is unaffected; the problem is specific to `$exists` on a typed path.
+
+### Endpoints now live
+
+| Method | Path | Auth |
+|---|---|---|
+| `POST` | `/api/contact` | none — legacy alias, permanent |
+| `POST` | `/api/v1/leads` | none |
+| `POST` | `/api/v1/admin/auth/login` | none |
+| `POST` | `/api/v1/admin/auth/refresh` | cookie |
+| `POST` | `/api/v1/admin/auth/logout` | cookie |
+| `GET` | `/api/v1/admin/auth/me` | Bearer |
+| `POST` | `/api/v1/admin/auth/users` | Bearer, superadmin |
+
+**Outstanding:** `JWT_ACCESS_SECRET` and `JWT_REFRESH_SECRET` are not in `server/.env` — development falls back to ephemeral secrets with a startup warning, so sessions do not survive a restart. Production **throws** without them.
+
+**Not built in Phase 1** (deferred to Phase 2 with the admin panel): lead list/detail/update endpoints, password reset, `logout-all`, `maintenanceGuard`.

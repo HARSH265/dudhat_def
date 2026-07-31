@@ -74,7 +74,17 @@ Delivered. Per-change detail in [PROJECT_INDEX.md](PROJECT_INDEX.md) §5.
 
 ---
 
-## 3. Phase 1 — Backend Foundation
+## 3. Phase 1 — Backend Foundation ✅ COMPLETE
+
+Delivered as 1A–1D. Per-change detail in [PROJECT_INDEX.md](PROJECT_INDEX.md) §6–7.
+
+**Ordering correction:** TypeScript ran *first*, not after the layering. `server/` was 6 files at the time, so converting first avoided converting ~25 later.
+
+**Scope note:** lead read/update endpoints, password reset and `logout-all` were deferred to Phase 2, where they ship alongside the admin screens that consume them. Building them now would mean writing endpoints against an unproven UI.
+
+---
+
+### Original scope
 
 Builds the layered architecture [ARCHITECTURE.md](ARCHITECTURE.md) already mandates but the code does not implement. The public site is untouched throughout.
 

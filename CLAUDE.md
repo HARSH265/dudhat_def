@@ -88,8 +88,8 @@ This repo has 39,580 files in `node_modules` and 8.3MB of images. Unfiltered sea
 
 ## Current State — Quick Facts
 
-Client: CRA (not Vite), no React Query, content hardcoded in all 8 pages.
-Server: **TypeScript**, `src/` → `dist/`, 1 endpoint, 1 collection, no service/repository layer yet.
+Client: CRA (not Vite), no React Query, content hardcoded in all 8 pages. **Untouched so far.**
+Server: TypeScript, `src/` → `dist/`, Controller → Service → Repository, JWT auth + RBAC, 7 collections.
 Neither: Cloudinary, tests, admin panel.
 
-**Phase 0 and Phase 1A are complete** — see `docs/PROJECT_INDEX.md` §5. Next is Phase 1B (layering, error handler, validation) in `docs/IMPLEMENTATION_ROADMAP.md`.
+**Phase 0 and Phase 1 are complete** — see `docs/PROJECT_INDEX.md` §5–7. Next is Phase 2 (admin panel, media, catalogue, lead management) in `docs/IMPLEMENTATION_ROADMAP.md`.
