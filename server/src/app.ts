@@ -96,7 +96,7 @@ export function createApp(): Application {
   app.use("/api/v1/admin/auth", authRoutes);
 
   app.get("/", (_req: Request, res: Response) => {
-    res.send("Dhudhat DEF API is running...");
+    res.send("Dudhat DEF API is running...");
   });
 
   // 13-14. Terminal handlers.

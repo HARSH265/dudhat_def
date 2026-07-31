@@ -44,6 +44,15 @@ export function errorHandler(
     appError = AppError.unprocessable("Validation failed.", errors);
   } else if (err instanceof mongoose.Error.CastError) {
     appError = AppError.badRequest(`Invalid value for ${err.path}.`);
+  } else if (isPayloadTooLarge(err)) {
+    // Phase 1 review M3: body-parser throws `entity.too.large`, which
+    // previously fell through to a generic 500 — reporting a correctly
+    // rejected request as a server fault and logging it at error level.
+    appError = new AppError(
+      413,
+      "Request payload is too large.",
+      ErrorCode.FILE_TOO_LARGE
+    );
   } else if (isDuplicateKeyError(err)) {
     appError = AppError.conflict(
       "A record with that value already exists.",
@@ -90,6 +99,15 @@ export function errorHandler(
   }
 
   res.status(appError.statusCode).json(body);
+}
+
+function isPayloadTooLarge(err: unknown): boolean {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "type" in err &&
+    (err as { type?: unknown }).type === "entity.too.large"
+  );
 }
 
 function isDuplicateKeyError(err: unknown): boolean {

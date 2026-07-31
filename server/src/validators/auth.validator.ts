@@ -27,12 +27,5 @@ export const createUserSchema = z
   })
   .strip();
 
-export const changePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Current password is required."),
-    newPassword: password,
-  })
-  .strip();
-
 export type LoginInput = z.infer<typeof loginSchema>;
 export type CreateUserInput = z.infer<typeof createUserSchema>;

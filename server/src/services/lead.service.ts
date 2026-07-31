@@ -1,5 +1,6 @@
 import { logger } from "../config/logger";
 import { leadRepository } from "../repositories/lead.repository";
+import { normalisePhone } from "../utils/phone";
 import type { ContactInput } from "../validators/contact.validator";
 
 export interface SubmitLeadContext {
@@ -48,9 +49,19 @@ export const leadService = {
       phone,
       ...(input.company ? { company: input.company } : {}),
       message: input.message,
-      type: "contact",
+      // Phase 1 review M2: honour the submitted type instead of forcing
+      // "contact". A quote request must be distinguishable from a general
+      // enquiry — the Quote Requests KPI counts this field.
+      type: input.type ?? "contact",
       source: "website",
-      ...(ctx.sourcePage ? { sourcePage: ctx.sourcePage } : {}),
+      ...(input.quantity ? { quantity: input.quantity } : {}),
+      ...(input.city ? { city: input.city } : {}),
+      ...(input.state ? { state: input.state } : {}),
+      ...(input.utm ? { utm: input.utm } : {}),
+      // An explicit sourcePage from the client wins over the Referer header.
+      ...(input.sourcePage ?? ctx.sourcePage
+        ? { sourcePage: input.sourcePage ?? ctx.sourcePage }
+        : {}),
       ...(ctx.ipHash ? { ipHash: ctx.ipHash } : {}),
       ...(ctx.userAgent ? { userAgent: ctx.userAgent } : {}),
       isSpam: spamScore >= SPAM_THRESHOLD,
@@ -86,17 +97,3 @@ function scoreSpam(input: ContactInput): number {
   return Math.min(score, 100);
 }
 
-/**
- * Collapses formatting so the same number is stored one way. Adds the India
- * country code for bare 10-digit numbers, which is what the form receives.
- */
-function normalisePhone(raw: string): string {
-  const trimmed = raw.trim();
-  const hasPlus = trimmed.startsWith("+");
-  const digits = trimmed.replace(/\D/g, "");
-
-  if (hasPlus) return `+${digits}`;
-  if (digits.length === 10) return `+91${digits}`;
-  if (digits.length === 12 && digits.startsWith("91")) return `+${digits}`;
-  return digits;
-}

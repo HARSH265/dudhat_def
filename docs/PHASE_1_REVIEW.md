@@ -6,6 +6,27 @@
 
 ---
 
+## 0. Resolution Status
+
+Fixed in commit following this review. Each fix was verified behaviourally, not just compiled.
+
+| # | Status | Verification |
+|---|---|---|
+| H1 | **Fixed** | `npm run sync:indexes` created 9 missing indexes; re-run reports all 7 collections unchanged. Startup now asserts and throws in production if any are missing |
+| H2 | **Fixed** | Unset `NODE_ENV` now assumes **production** — absence of config no longer grants development relaxations. Verified it throws on missing secrets |
+| H3 | **Fixed** | `IP_HASH_SALT` required outside development; in-source default removed |
+| M1 | **Fixed** | Short message now returns "Please tell us a little more…"; a genuinely absent field still returns the legacy copy |
+| M2 | **Fixed** | `type`, `quantity`, `city`, `state`, `utm`, `sourcePage`, `productSlug` now validated and persisted. Verified `type: "quote"` stores as `quote` |
+| M3 | **Fixed** | Oversized payload returns 413 `FILE_TOO_LARGE` |
+| M6 | **Fixed** | `normalisePhone` extracted to `utils/phone.ts`; migration and live path now share it |
+| L1–L3 | **Fixed** | Orphaned `Contact.ts` model, `safeEqual()`, and `changePasswordSchema` deleted |
+| M4, M5, L4 | **Deferred** | Ship with the Phase 2 endpoints that consume them (status update, user update, logout-all) |
+| L5–L11 | **Open** | Cosmetic; no behavioural impact |
+
+**Operational consequence of the H2 fix:** `server/.env` now needs `NODE_ENV=development` for local work, and production additionally needs `IP_HASH_SALT`. This is deliberate — the previous behaviour was that a host which forgot `NODE_ENV` silently ran with development security settings.
+
+---
+
 ## 1. Verdict
 
 Phase 1 delivers what it claimed: layering, auth, RBAC, audit, and the lead model. **It is not production-deployable as it stands.** Three high-severity issues (§3) are all configuration or deployment gaps rather than logic defects, and all three are invisible in development — which is why they need to be closed before Phase 2 rather than discovered at deploy time.
@@ -81,7 +102,7 @@ The `secret()` fallback is the dangerous one: it was written to make development
 `src/utils/crypto.ts`:
 
 ```
-const salt = process.env["IP_HASH_SALT"] ?? "dhudhat-dev-salt";
+const salt = process.env["IP_HASH_SALT"] ?? "Dudhat-dev-salt";
 ```
 
 Confirmed unset. Every `ipHash` on a lead and every audit record is therefore salted with a constant that is in the repository and in git history. IPv4 space is small enough to exhaust; a known salt makes those hashes reversible by anyone with repo access.
@@ -169,7 +190,7 @@ Currently zero rows are affected — the `contacts` collection is empty — so t
 | L8 | The migration writes provenance into `lead.utm.migratedFrom`, conflating marketing attribution with migration bookkeeping. `utm` is `Mixed`, so nothing prevents it | `scripts/migrateContactsToLeads.ts` |
 | L9 | `authenticate` reads the user from the database on every admin request. Correct for immediate deactivation, but uncached — worth revisiting when the admin panel generates real traffic | `middleware/authenticate.ts` |
 | L10 | Non-null assertion `req.user!.id` rather than a narrowed type | `controllers/auth.controller.ts` |
-| L11 | The seeded superadmin is `himanshu@dudhatdef.com`; every document and the settings seed use `dhudhatdef.com` (with the `h`). One of the two spellings is wrong, and the wrong one will end up in customer-facing email | seed data vs `SEED_DATA.md` |
+| L11 | The seeded superadmin is `himanshu@dudhatdef.com`; every document and the settings seed use `Dudhatdef.com` (with the `h`). One of the two spellings is wrong, and the wrong one will end up in customer-facing email | seed data vs `SEED_DATA.md` |
 
 ---
 
@@ -177,7 +198,7 @@ Currently zero rows are affected — the `contacts` collection is empty — so t
 
 | Value | Location | Assessment |
 |---|---|---|
-| `"dhudhat-dev-salt"` | `utils/crypto.ts` | **H3** — must not have a default |
+| `"Dudhat-dev-salt"` | `utils/crypto.ts` | **H3** — must not have a default |
 | `DUMMY_HASH` bcrypt literal | `services/auth.service.ts` | Acceptable. Deliberate constant for timing equalisation, contains no secret |
 | `"dd_refresh"` cookie name | `auth.controller.ts` | Acceptable, single definition site |
 | `/api/v1/admin/auth` cookie path | `app.ts`, `auth.controller.ts` | **L6** — duplicated |

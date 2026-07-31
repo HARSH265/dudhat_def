@@ -6,6 +6,7 @@ import { connectDB, disconnectDB } from "../config/db";
 import Lead from "../models/Lead";
 import LeadActivity from "../models/LeadActivity";
 import { nextSequence } from "../models/Counter";
+import { normalisePhone } from "../utils/phone";
 
 /**
  * Migration M1: contacts -> leads. docs/DATABASE_ARCHITECTURE.md §8
@@ -40,7 +41,9 @@ async function main(): Promise<void> {
       leadNumber: `DEF-${year}-${String(seq).padStart(5, "0")}`,
       name: doc["name"],
       email: doc["email"],
-      phone: doc["phone"],
+      // Phase 1 review M6: same normalisation the live path applies, so one
+      // collection does not end up holding two phone formats.
+      phone: normalisePhone(String(doc["phone"] ?? "")),
       company: doc["company"],
       message: doc["message"],
       type: "contact",

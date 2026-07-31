@@ -1,5 +1,6 @@
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
+import { env } from "../config/env";
 
 /**
  * bcryptjs rather than native bcrypt: this environment blocks native
@@ -36,14 +37,7 @@ export function sha256(value: string): string {
  */
 export function hashIp(ip: string | undefined): string | undefined {
   if (!ip) return undefined;
-  const salt = process.env["IP_HASH_SALT"] ?? "dhudhat-dev-salt";
-  return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
-}
-
-/** Constant-time comparison for secrets of equal expected length. */
-export function safeEqual(a: string, b: string): boolean {
-  const bufA = Buffer.from(a);
-  const bufB = Buffer.from(b);
-  if (bufA.length !== bufB.length) return false;
-  return timingSafeEqual(bufA, bufB);
+  // Salt resolved in config/env.ts, which requires it outside development.
+  // Phase 1 review H3.
+  return createHash("sha256").update(`${env.ipHashSalt}:${ip}`).digest("hex");
 }

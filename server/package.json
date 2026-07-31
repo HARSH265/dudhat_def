@@ -1,13 +1,14 @@
 {
-  "name": "dhudhat-def-server",
+  "name": "Dudhat-def-server",
   "version": "1.0.0",
-  "description": "Backend server for Dhudhat DEF website (Contact Form API)",
+  "description": "Backend server for Dudhat DEF website (Contact Form API)",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --ext ts,json --exec \"tsc && node dist/server.js\"",
     "typecheck": "tsc --noEmit",
+    "sync:indexes": "tsc && node dist/scripts/syncIndexes.js",
     "seed:admin": "tsc && node dist/scripts/seedAdmin.js",
     "seed:settings": "tsc && node dist/scripts/seedSettings.js",
     "migrate:leads": "tsc && node dist/scripts/migrateContactsToLeads.js"

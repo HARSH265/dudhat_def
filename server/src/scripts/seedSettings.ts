@@ -27,19 +27,19 @@ async function main(): Promise<void> {
   await Settings.create({
     key: "global",
     company: {
-      legalName: "Dhudhat Industries Private Limited",
-      brandName: "Dhudhat DEF",
+      legalName: "Dudhat Industries Private Limited",
+      brandName: "Dudhat DEF",
       tagline: "DRIVING CLEANER TOMORROW",
       about:
-        "Dhudhat Industries Private Limited is committed to delivering premium " +
+        "Dudhat Industries Private Limited is committed to delivering premium " +
         "quality DEF solutions for a cleaner environment and better tomorrow.",
     },
     contact: {
       phone: "[PLACEHOLDER] +91 12345 67890",
       whatsapp: "[PLACEHOLDER] +91 12345 67890",
-      email: "[PLACEHOLDER] info@dhudhatdef.com",
-      salesEmail: "[PLACEHOLDER] sales@dhudhatdef.com",
-      website: "www.dhudhatdef.com",
+      email: "[PLACEHOLDER] info@Dudhatdef.com",
+      salesEmail: "[PLACEHOLDER] sales@Dudhatdef.com",
+      website: "www.Dudhatdef.com",
     },
     address: {
       line1: "[PLACEHOLDER] Plot No. ___",

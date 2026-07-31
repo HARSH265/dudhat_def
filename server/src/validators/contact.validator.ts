@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LEAD_TYPES } from "../models/Lead";
 
 /**
  * Field rules from docs/API_SPECIFICATION.md §4.3.
@@ -52,6 +53,28 @@ export const contactSchema = z
     // A non-empty value is accepted with a 201 and discarded by the service.
     // docs/API_SPECIFICATION.md §4.3
     website: z.string().max(200).optional(),
+
+    // Phase 1 review M2: these are specified in API_SPECIFICATION §4.3 and
+    // supported by the Lead model, but were absent from this schema — and
+    // .strip() removed them silently. `type` in particular meant every
+    // submission recorded as "contact", which is the field the Quote
+    // Requests KPI counts.
+    type: z.enum(LEAD_TYPES).optional(),
+    productSlug: z.string().trim().max(150).optional(),
+    quantity: z.string().trim().max(100).optional(),
+    city: z.string().trim().max(100).optional(),
+    state: z.string().trim().max(100).optional(),
+    sourcePage: z.string().trim().max(200).optional(),
+    utm: z
+      .object({
+        source: z.string().trim().max(100).optional(),
+        medium: z.string().trim().max(100).optional(),
+        campaign: z.string().trim().max(100).optional(),
+        term: z.string().trim().max(100).optional(),
+        content: z.string().trim().max(100).optional(),
+      })
+      .strip()
+      .optional(),
   })
   // Unknown keys are dropped, not rejected — a client sending an extra field
   // should not have its enquiry fail.

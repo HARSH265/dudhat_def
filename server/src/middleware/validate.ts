@@ -31,13 +31,27 @@ export function validateBody<T>(
         message: issue.message,
       }));
 
-      // Preserve the legacy 400 copy when the failure is a missing required
-      // field. ContactForm.jsx renders res.data.message directly.
-      const hasMissingRequired = result.error.issues.some(
-        (issue) =>
-          issue.code === "invalid_type" ||
-          (issue.code === "too_small" && issue.path.length > 0)
-      );
+      // Preserve the legacy 400 copy ONLY when a required field is genuinely
+      // absent or empty. ContactForm.jsx renders res.data.message directly.
+      //
+      // Phase 1 review M1: this previously also matched `too_small`, which
+      // fires for a present-but-short value. A user who filled every field
+      // but wrote a brief message was told to fill in the fields they had
+      // already filled.
+      const body = (req.body ?? {}) as Record<string, unknown>;
+      const isAbsent = (field: string): boolean => {
+        const value = body[field];
+        return (
+          value === undefined ||
+          value === null ||
+          (typeof value === "string" && value.trim() === "")
+        );
+      };
+
+      const hasMissingRequired = result.error.issues.some((issue) => {
+        const field = issue.path[0];
+        return typeof field === "string" && isAbsent(field);
+      });
 
       const message =
         hasMissingRequired && options.missingFieldMessage

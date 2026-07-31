@@ -22,20 +22,39 @@ function optional(key: string, fallback: string): string {
   return value && value.trim() !== "" ? value : fallback;
 }
 
-const nodeEnv = optional("NODE_ENV", "development");
-const inProduction = nodeEnv === "production";
+const rawNodeEnv = process.env["NODE_ENV"]?.trim();
 
 /**
- * Secrets are mandatory in production. In development a missing secret falls
- * back to an ephemeral random value so the server still boots — tokens then
- * become invalid on every restart, which is acceptable locally and loud
+ * Development conveniences require NODE_ENV to say "development" EXPLICITLY.
+ *
+ * Phase 1 review H2: this previously defaulted to "development" when NODE_ENV
+ * was absent, so a production host that simply forgot to set it inherited
+ * every development relaxation — ephemeral JWT secrets, an insecure cookie,
+ * and internal IDs in error bodies. Absence of configuration must not grant
+ * privilege, so an unset NODE_ENV is now treated as production.
+ */
+const isDevelopment = rawNodeEnv === "development" || rawNodeEnv === "test";
+const nodeEnv = rawNodeEnv ?? "production";
+const inProduction = !isDevelopment;
+
+if (!rawNodeEnv) {
+  console.warn(
+    "[env] NODE_ENV is not set. Assuming production and enforcing production " +
+      "rules. Set NODE_ENV=development in server/.env for local work."
+  );
+}
+
+/**
+ * Secrets are mandatory outside development. In development a missing secret
+ * falls back to an ephemeral random value so the server still boots — tokens
+ * then become invalid on every restart, which is acceptable locally and loud
  * enough to notice. docs/SECURITY_ARCHITECTURE.md §5
  */
 function secret(key: string): string {
   const value = process.env[key];
   if (value && value.trim() !== "") return value;
 
-  if (inProduction) {
+  if (!isDevelopment) {
     throw new Error(
       `Missing required environment variable: ${key}. See server/.env.example`
     );
@@ -46,6 +65,28 @@ function secret(key: string): string {
       `sessions will not survive a restart. Add it to server/.env.`
   );
   return randomBytes(32).toString("base64");
+}
+
+/**
+ * Phase 1 review H3: the IP hash salt previously had an in-source default,
+ * which meant every deployment that forgot to set it salted with a constant
+ * committed to git — making the hashes reversible and defeating the reason
+ * for hashing. The development default is stable (so hashes are comparable
+ * across restarts) but is only reachable when NODE_ENV says development.
+ */
+function saltValue(): string {
+  const value = process.env["IP_HASH_SALT"];
+  if (value && value.trim() !== "") return value;
+
+  if (!isDevelopment) {
+    throw new Error(
+      "Missing required environment variable: IP_HASH_SALT. " +
+        "See server/.env.example"
+    );
+  }
+
+  console.warn("[env] IP_HASH_SALT is not set. Using the development salt.");
+  return "development-only-ip-salt";
 }
 
 export const env = {
@@ -61,6 +102,8 @@ export const env = {
   jwtRefreshSecret: secret("JWT_REFRESH_SECRET"),
   jwtAccessExpiry: optional("JWT_ACCESS_EXPIRY", "15m"),
   refreshTokenDays: Number(optional("REFRESH_TOKEN_DAYS", "7")),
+
+  ipHashSalt: saltValue(),
 } as const;
 
 export const isProduction = inProduction;

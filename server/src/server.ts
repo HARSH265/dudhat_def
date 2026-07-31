@@ -4,11 +4,17 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 import type { Server } from "node:http";
 import { createApp } from "./app";
-import { connectDB, disconnectDB } from "./config/db";
+import { assertIndexes, connectDB, disconnectDB } from "./config/db";
 import { env } from "./config/env";
+import { registerModels } from "./models";
 
 async function start(): Promise<void> {
   await connectDB();
+
+  // Registers every schema, then verifies the database actually carries the
+  // declared indexes. Phase 1 review H1.
+  registerModels();
+  await assertIndexes();
 
   const app = createApp();
   const server: Server = app.listen(env.port, () => {
