@@ -1,7 +1,7 @@
 # API Specification
 
 > Status: Planning document. No code written yet.
-> Scope: Target REST API for Dhudhat DEF V2.
+> Scope: Target REST API for Dudhat DEF V2.
 > Related: [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md), [ADMIN_PANEL_SPECIFICATION.md](ADMIN_PANEL_SPECIFICATION.md), [ARCHITECTURE.md](ARCHITECTURE.md), [CLAUDE_RULES.md](CLAUDE_RULES.md)
 
 ---
@@ -350,7 +350,7 @@ Minimal form — `name` + `phone` only. Creates a lead with `type: callback`. Sa
 | Method | Path | Notes |
 |---|---|---|
 | `GET` | `/api/v1/health` | `{ status, uptime, db: 'connected' \| 'disconnected' }`. `503` when the DB is down. |
-| `GET` | `/` | Kept as-is: `"Dhudhat DEF API is running..."`. Harmless and already referenced. |
+| `GET` | `/` | Kept as-is: `"Dudhat DEF API is running..."`. Harmless and already referenced. |
 
 ---
 

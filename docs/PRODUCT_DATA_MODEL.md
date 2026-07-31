@@ -1,7 +1,7 @@
 # Product Data Model
 
 > Status: Planning document. No code written yet.
-> Scope: How Dhudhat DEF products, packaging, and specifications are modelled.
+> Scope: How Dudhat DEF products, packaging, and specifications are modelled.
 > Related: [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md), [CMS_BLUEPRINT.md](CMS_BLUEPRINT.md), [API_SPECIFICATION.md](API_SPECIFICATION.md), [ADMIN_PANEL_SPECIFICATION.md](ADMIN_PANEL_SPECIFICATION.md)
 
 ---
@@ -59,7 +59,7 @@ The site currently presents the same four SKUs twice — as four *products* on `
 
 ### The reality
 
-Dhudhat DEF is **one chemical product** — a 32.5% aqueous urea solution meeting ISO 22241. The 10L can, 20L can, 210L drum, and 1000L IBC are four *containers* for the same fluid. They share every specification: purity, urea concentration, density, shelf life, compliance. They differ only in volume, container type, handling, and minimum order quantity.
+Dudhat DEF is **one chemical product** — a 32.5% aqueous urea solution meeting ISO 22241. The 10L can, 20L can, 210L drum, and 1000L IBC are four *containers* for the same fluid. They share every specification: purity, urea concentration, density, shelf life, compliance. They differ only in volume, container type, handling, and minimum order quantity.
 
 ### Options
 
@@ -97,7 +97,7 @@ The public URL structure and the CMS structure are allowed to differ; the CMS sh
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `name` | String | yes | `"Dhudhat DEF"` — trim, 2–150 |
+| `name` | String | yes | `"Dudhat DEF"` — trim, 2–150 |
 | `slug` | String | yes | Auto from `name`, unique, lowercase, immutable after publish |
 | `sku` | String | no | Base SKU; variants extend it |
 | `tagline` | String | no | ≤ 120 — `"32.5% High Purity Diesel Exhaust Fluid"` |
@@ -129,7 +129,7 @@ The technical table. Structured rows, not a rich-text blob, so they can be filte
 
 **`value` as String is deliberate.** DEF specifications are expressed as limits and ranges far more often than as single numbers. Forcing them numeric would mean either losing the qualifier or inventing `min`/`max`/`operator` columns that most rows leave empty. The trade-off is no numeric filtering — acceptable, since nobody filters DEF by refractive index.
 
-**ISO 22241-1 template** — the admin panel's "Load ISO 22241 template" button prefills these rows. Values below are the published standard limits and must be confirmed against Dhudhat's own Certificate of Analysis before publishing.
+**ISO 22241-1 template** — the admin panel's "Load ISO 22241 template" button prefills these rows. Values below are the published standard limits and must be confirmed against Dudhat's own Certificate of Analysis before publishing.
 
 | Group | Label | Typical value | Unit | Standard |
 |---|---|---|---|---|
@@ -253,15 +253,15 @@ Option B applied to the current catalogue.
 
 ```json
 {
-  "name": "Dhudhat DEF",
-  "slug": "dhudhat-def",
+  "name": "Dudhat DEF",
+  "slug": "Dudhat-def",
   "tagline": "32.5% High Purity Diesel Exhaust Fluid",
   "sku": "DDEF",
   "categoryId": "<def-category-id>",
   "categoryName": "Diesel Exhaust Fluid",
 
   "shortDescription": "High quality Diesel Exhaust Fluid (DEF) for reduced emissions and better engine performance.",
-  "description": "<p>Dhudhat DEF is a high-purity aqueous urea solution ...</p>",
+  "description": "<p>Dudhat DEF is a high-purity aqueous urea solution ...</p>",
 
   "highlights": [
     "99.9% purity, manufactured to ISO 22241",
@@ -284,8 +284,8 @@ Option B applied to the current catalogue.
     {
       "label": "10L Can", "slug": "10l-can", "volume": 10, "unit": "L",
       "containerType": "can", "material": "HDPE", "sku": "DDEF-10L",
-      "image":          { "url": "/media/products/can-10l.png",  "alt": "Dhudhat DEF 10L can" },
-      "packagingImage": { "url": "/media/packaging/pack-10l.png","alt": "Dhudhat DEF 10L can packaging" },
+      "image":          { "url": "/media/products/can-10l.png",  "alt": "Dudhat DEF 10L can" },
+      "packagingImage": { "url": "/media/packaging/pack-10l.png","alt": "Dudhat DEF 10L can packaging" },
       "features": ["Leak Proof", "Tamper Proof Cap", "100% Recyclable"],
       "isAvailable": true, "displayOrder": 1
     },
@@ -304,7 +304,7 @@ Option B applied to the current catalogue.
   "status": "published",
 
   "seo": {
-    "metaTitle": "Dhudhat DEF | ISO 22241 Diesel Exhaust Fluid Supplier",
+    "metaTitle": "Dudhat DEF | ISO 22241 Diesel Exhaust Fluid Supplier",
     "metaDescription": "High purity 32.5% Diesel Exhaust Fluid manufactured to ISO 22241. Available in 10L, 20L, 210L and 1000L packaging. Request a quote.",
     "schemaType": "Product",
     "ogType": "product"

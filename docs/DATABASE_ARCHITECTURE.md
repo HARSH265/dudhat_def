@@ -1,7 +1,7 @@
 # Database Architecture
 
 > Status: Planning document. No code written yet.
-> Scope: Target MongoDB / Mongoose data layer for Dhudhat DEF V2 (CMS + Lead Generation platform).
+> Scope: Target MongoDB / Mongoose data layer for Dudhat DEF V2 (CMS + Lead Generation platform).
 > Related: [PROJECT_BIBLE.md](PROJECT_BIBLE.md), [CMS_BLUEPRINT.md](CMS_BLUEPRINT.md), [ARCHITECTURE.md](ARCHITECTURE.md), [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md)
 
 ---
@@ -601,7 +601,7 @@ Per [ARCHITECTURE.md](ARCHITECTURE.md), **repositories perform database operatio
 
 These need a decision from the business before Phase 2 modelling is final:
 
-1. **Are packaging sizes products, or variants of one product?** The current site presents them as four products on `/products` *and* four packages on `/packaging`, with the same four SKUs. [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §3 recommends one product ("Dhudhat DEF") with four packaging variants, but this changes the URL structure and needs sign-off.
+1. **Are packaging sizes products, or variants of one product?** The current site presents them as four products on `/products` *and* four packages on `/packaging`, with the same four SKUs. [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §3 recommends one product ("Dudhat DEF") with four packaging variants, but this changes the URL structure and needs sign-off.
 2. **Is there more than one DEF grade?** If a second product line is planned (e.g. AdBlue-branded, or bulk tanker supply), the category tree matters now rather than later.
 3. **Lead data retention period.** Leads currently have no TTL by design. Confirm whether a retention policy is required for compliance.
 4. **Multi-language?** No i18n is modelled. Adding it later means a `translations` sub-document on every content collection — cheap now, expensive after launch.

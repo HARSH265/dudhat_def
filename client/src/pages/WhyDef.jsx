@@ -56,7 +56,7 @@ const WhyDef = () => {
       </section>
 
       <div className="cta-banner">
-        <p>Use Dhudhat DEF. Drive Clean. Breathe Clean.</p>
+        <p>Use Dudhat DEF. Drive Clean. Breathe Clean.</p>
       </div>
     </>
   );

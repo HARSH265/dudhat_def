@@ -1,4 +1,4 @@
-# Dhudhat DEF V2 - Project Bible
+# Dudhat DEF V2 - Project Bible
 
 ## Vision
 Transform the current brochure-style website into a lead-generation platform with a complete CMS.

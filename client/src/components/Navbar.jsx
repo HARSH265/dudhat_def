@@ -21,14 +21,14 @@ const Navbar = () => {
         <NavLink to="/" className="navbar-logo">
           <img
             src={logo}
-            alt="Dhudhat DEF Logo"
+            alt="Dudhat DEF Logo"
             className="logo-icon"
             width="1774"
             height="887"
           />
           <div className="logo-text">
             <span className="logo-title">
-              DHUDHAT <span className="logo-def">DEF</span>
+              Dudhat <span className="logo-def">DEF</span>
             </span>
             <span className="logo-tagline">DRIVING CLEANER TOMORROW</span>
           </div>

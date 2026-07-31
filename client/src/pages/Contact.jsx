@@ -19,15 +19,15 @@ const Contact = () => {
             </li>
             <li>
               <span className="contact-icon"><FaEnvelope /></span>
-              info@dhudhatdef.com
+              info@Dudhatdef.com
             </li>
             <li>
               <span className="contact-icon"><FaGlobe /></span>
-              www.dhudhatdef.com
+              www.Dudhatdef.com
             </li>
             <li>
               <span className="contact-icon"><FaMapMarkerAlt /></span>
-              Dhudhat Industries Private Limited, Plot No. ___, MIDC,
+              Dudhat Industries Private Limited, Plot No. ___, MIDC,
               ________, Maharashtra, India.
             </li>
           </ul>

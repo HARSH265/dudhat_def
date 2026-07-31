@@ -1,7 +1,7 @@
 # Admin Panel Specification
 
 > Status: Planning document. No code written yet.
-> Scope: The CMS / lead-management back office for Dhudhat DEF V2.
+> Scope: The CMS / lead-management back office for Dudhat DEF V2.
 > Related: [CMS_BLUEPRINT.md](CMS_BLUEPRINT.md), [API_SPECIFICATION.md](API_SPECIFICATION.md), [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md), [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
 
 ---

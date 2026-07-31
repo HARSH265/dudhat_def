@@ -50,16 +50,16 @@ Seeds the `settings` singleton ([DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE
 
 | Field | Placeholder value | Source |
 |---|---|---|
-| `company.legalName` | Dhudhat Industries Private Limited | Real — from `Footer.jsx` |
-| `company.brandName` | Dhudhat DEF | Real |
+| `company.legalName` | Dudhat Industries Private Limited | Real — from `Footer.jsx` |
+| `company.brandName` | Dudhat DEF | Real |
 | `company.tagline` | DRIVING CLEANER TOMORROW | Real |
 | `company.about` | *(existing Footer copy)* | Real |
 | `contact.phone` | ⚠️ `[PLACEHOLDER] +91 12345 67890` | Placeholder in current code |
 | `contact.altPhone` | ⚠️ *(empty)* | — |
 | `contact.whatsapp` | ⚠️ `[PLACEHOLDER] +91 12345 67890` | — |
-| `contact.email` | ⚠️ `[PLACEHOLDER] info@dhudhatdef.com` | Domain plausible, unverified |
-| `contact.salesEmail` | ⚠️ `[PLACEHOLDER] sales@dhudhatdef.com` | — |
-| `contact.website` | ⚠️ `www.dhudhatdef.com` | Unverified |
+| `contact.email` | ⚠️ `[PLACEHOLDER] info@Dudhatdef.com` | Domain plausible, unverified |
+| `contact.salesEmail` | ⚠️ `[PLACEHOLDER] sales@Dudhatdef.com` | — |
+| `contact.website` | ⚠️ `www.Dudhatdef.com` | Unverified |
 | `address.line1` | ⚠️ `[PLACEHOLDER] Plot No. ___` | Placeholder in current code |
 | `address.line2` | ⚠️ `[PLACEHOLDER] MIDC` | — |
 | `address.city` | ⚠️ `[PLACEHOLDER]` | — |
@@ -75,7 +75,7 @@ Seeds the `settings` singleton ([DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE
 
 ---
 
-## 3. Product Seed — Dhudhat DEF
+## 3. Product Seed — Dudhat DEF
 
 One product, four variants. Values below marked ⚠️ are placeholders pending a real Certificate of Analysis.
 
@@ -83,8 +83,8 @@ One product, four variants. Values below marked ⚠️ are placeholders pending 
 
 | Field | Value | Status |
 |---|---|---|
-| `name` | Dhudhat DEF | Real |
-| `slug` | `dhudhat-def` | Real |
+| `name` | Dudhat DEF | Real |
+| `slug` | `Dudhat-def` | Real |
 | `sku` | `DDEF` | Provisional |
 | `tagline` | ⚠️ `[PLACEHOLDER] 32.5% High Purity Diesel Exhaust Fluid` | Concentration unverified |
 | `shortDescription` | High quality Diesel Exhaust Fluid (DEF) for reduced emissions and better engine performance. | Real — from `Home.jsx` |
@@ -92,7 +92,7 @@ One product, four variants. Values below marked ⚠️ are placeholders pending 
 
 ### Specifications ⚠️ — all placeholder
 
-These are **ISO 22241-1 published limits**, not Dhudhat test results. They are seeded so the spec table renders and the editor has realistic data to work with. Every row carries `isPlaceholder: true`.
+These are **ISO 22241-1 published limits**, not Dudhat test results. They are seeded so the spec table renders and the editor has realistic data to work with. Every row carries `isPlaceholder: true`.
 
 | Group | Label | Value | Unit | Standard |
 |---|---|---|---|---|
@@ -155,7 +155,7 @@ One category only. See [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §5.
 | Field | Value |
 |---|---|
 | `name` | Administrator |
-| `email` | `admin@dhudhatdef.com` |
+| `email` | `admin@Dudhatdef.com` |
 | `role` | `superadmin` |
 | `password` | **Not seeded** |
 

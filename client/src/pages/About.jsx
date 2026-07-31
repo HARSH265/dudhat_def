@@ -21,7 +21,7 @@ const About = () => {
             Driven by Performance.
           </h1>
           <p>
-            Dhudhat Industries Private Limited is committed to manufacturing
+            Dudhat Industries Private Limited is committed to manufacturing
             high quality Diesel Exhaust Fluid (DEF) that meets global
             standards.
           </p>
@@ -41,7 +41,7 @@ const About = () => {
         <div className="about-image">
           <img
             src={facilityImage}
-            alt="Dhudhat DEF Manufacturing Facility"
+            alt="Dudhat DEF Manufacturing Facility"
             width="1662"
             height="946"
           />

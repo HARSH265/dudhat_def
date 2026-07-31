@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="footer-logo">
             <img
               src={logo}
-              alt="Dhudhat DEF Logo"
+              alt="Dudhat DEF Logo"
               className="logo-icon"
               width="1774"
               height="887"
@@ -22,13 +22,13 @@ const Footer = () => {
             />
             <div className="logo-text">
               <span className="logo-title">
-                DHUDHAT <span className="logo-def">DEF</span>
+                Dudhat <span className="logo-def">DEF</span>
               </span>
               <span className="logo-tagline">DRIVING CLEANER TOMORROW</span>
             </div>
           </div>
           <p>
-            Dhudhat Industries Private Limited is committed to delivering
+            Dudhat Industries Private Limited is committed to delivering
             premium quality DEF solutions for a cleaner environment and
             better tomorrow.
           </p>
@@ -71,10 +71,10 @@ const Footer = () => {
           <h4>Contact Info</h4>
           <ul className="footer-contact">
             <li><FaPhoneAlt /> +91 12345 67890</li>
-            <li><FaEnvelope /> info@dhudhatdef.com</li>
-            <li><FaGlobe /> www.dhudhatdef.com</li>
+            <li><FaEnvelope /> info@Dudhatdef.com</li>
+            <li><FaGlobe /> www.Dudhatdef.com</li>
             <li>
-              <FaMapMarkerAlt /> Dhudhat Industries Private Limited,
+              <FaMapMarkerAlt /> Dudhat Industries Private Limited,
               Plot No. ___, MIDC, ________, Maharashtra, India.
             </li>
           </ul>
@@ -92,7 +92,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {year} Dhudhat Industries Private Limited. All Rights Reserved.</p>
+        <p>&copy; {year} Dudhat Industries Private Limited. All Rights Reserved.</p>
         <div className="footer-legal">
           <Link to="/">Privacy Policy</Link>
           <Link to="/">Terms &amp; Conditions</Link>

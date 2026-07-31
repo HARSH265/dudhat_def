@@ -10,4 +10,4 @@ Disallow: /api
 # Disallow: /
 
 # Added once the sitemap exists (Phase 3).
-# Sitemap: https://www.dhudhatdef.com/sitemap.xml
+# Sitemap: https://www.Dudhatdef.com/sitemap.xml

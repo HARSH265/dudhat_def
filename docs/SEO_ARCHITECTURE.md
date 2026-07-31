@@ -111,10 +111,10 @@ Emitted per route:
 
 | Route type | Pattern |
 |---|---|
-| Home | `Dhudhat DEF \| Driving Cleaner Tomorrow` (unchanged — currently correct) |
-| Content page | `{Page Title} \| Dhudhat DEF` |
-| Product | `{Product Name} \| ISO 22241 DEF Supplier \| Dhudhat DEF` |
-| Category | `{Category} \| Dhudhat DEF` |
+| Home | `Dudhat DEF \| Driving Cleaner Tomorrow` (unchanged — currently correct) |
+| Content page | `{Page Title} \| Dudhat DEF` |
+| Product | `{Product Name} \| ISO 22241 DEF Supplier \| Dudhat DEF` |
+| Category | `{Category} \| Dudhat DEF` |
 
 The brand suffix is appended by the `Seo` component, not stored in `metaTitle`. Storing it would consume characters in the admin panel's counter and make a brand rename a content migration.
 
@@ -146,7 +146,7 @@ The current 8 URLs are clean, readable, lowercase, and hyphenated. **They do not
 ### Rules
 
 - Lowercase, hyphenated, no trailing slash, no file extensions, no query parameters for canonical content
-- Maximum depth 2 (`/products/dhudhat-def`)
+- Maximum depth 2 (`/products/Dudhat-def`)
 - Slugs are immutable after publish; a change creates a 301 via the `redirects` collection ([DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md) §5.10)
 - Unknown routes return **HTTP 404** with a real 404 page. Currently they return 200 with an empty body, which is a soft-404 — Google treats these as low-quality pages and it dilutes crawl budget
 

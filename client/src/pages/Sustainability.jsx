@@ -36,12 +36,12 @@ const Sustainability = () => {
             Driving Cleaner <br /> Tomorrow, Today.
           </h1>
           <p>
-            At Dhudhat DEF, sustainability is at the core of everything we
+            At Dudhat DEF, sustainability is at the core of everything we
             do. From manufacturing to packaging, we're committed to reducing
             our environmental footprint.
           </p>
           <p>
-            Every can, drum, and tank of Dhudhat DEF helps reduce harmful
+            Every can, drum, and tank of Dudhat DEF helps reduce harmful
             NOx emissions — contributing to cleaner air for everyone.
           </p>
         </div>
@@ -49,7 +49,7 @@ const Sustainability = () => {
         <div className="about-image">
           <img
             src={sustainabilityImage}
-            alt="Dhudhat DEF Sustainability"
+            alt="Dudhat DEF Sustainability"
             width="1662"
             height="946"
           />

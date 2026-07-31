@@ -1,4 +1,4 @@
-# Dhudhat DEF Website (MERN Stack)
+# Dudhat DEF Website (MERN Stack)
 
 ## Structure
 
