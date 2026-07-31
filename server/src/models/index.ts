@@ -6,6 +6,7 @@ import Lead from "./Lead";
 import LeadActivity from "./LeadActivity";
 import Settings from "./Settings";
 import Counter from "./Counter";
+import Media from "./Media";
 
 /**
  * Single registry of every model. Used by the index sync script and the
@@ -20,6 +21,7 @@ export const MODELS: Record<string, Model<never>> = {
   LeadActivity: LeadActivity as unknown as Model<never>,
   Settings: Settings as unknown as Model<never>,
   Counter: Counter as unknown as Model<never>,
+  Media: Media as unknown as Model<never>,
 };
 
 /**
@@ -31,4 +33,13 @@ export function registerModels(): void {
   // explicit, greppable call rather than relying on import side effects.
 }
 
-export { User, RefreshToken, ActivityLog, Lead, LeadActivity, Settings, Counter };
+export {
+  User,
+  RefreshToken,
+  ActivityLog,
+  Lead,
+  LeadActivity,
+  Settings,
+  Counter,
+  Media,
+};

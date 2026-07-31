@@ -104,6 +104,39 @@ export const env = {
   refreshTokenDays: Number(optional("REFRESH_TOKEN_DAYS", "7")),
 
   ipHashSalt: saltValue(),
+
+  cloudinary: {
+    cloudName: optional("CLOUDINARY_CLOUD_NAME", ""),
+    apiKey: cloudinaryCredential("API_KEY"),
+    apiSecret: cloudinaryCredential("API_SECRET"),
+  },
 } as const;
+
+/**
+ * Cloudinary's dashboard labels these "API Key" and "API Secret", so they
+ * often land in .env unprefixed. Bare API_KEY / API_SECRET are generic enough
+ * to collide with the next service added, so the prefixed names win and the
+ * fallback warns.
+ */
+function cloudinaryCredential(suffix: "API_KEY" | "API_SECRET"): string {
+  const prefixed = process.env[`CLOUDINARY_${suffix}`];
+  if (prefixed && prefixed.trim() !== "") return prefixed;
+
+  const bare = process.env[suffix];
+  if (bare && bare.trim() !== "") {
+    console.warn(
+      `[env] Using ${suffix} for Cloudinary. Rename it to CLOUDINARY_${suffix} ` +
+        `— a bare ${suffix} will collide with the next service you add.`
+    );
+    return bare;
+  }
+  return "";
+}
+
+/** Media uploads are unavailable rather than broken when unconfigured. */
+export const isCloudinaryConfigured =
+  env.cloudinary.cloudName !== "" &&
+  env.cloudinary.apiKey !== "" &&
+  env.cloudinary.apiSecret !== "";
 
 export const isProduction = inProduction;

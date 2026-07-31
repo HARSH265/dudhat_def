@@ -218,3 +218,31 @@ Lead management API. Closes all three Phase 1 deferrals (M4, M5, L4).
 **Known gap:** `productViews` on the dashboard returns `null` until `pageviews` arrives with the catalogue in 2C. Returning a fabricated number would be worse.
 
 **Validation note worth knowing:** the lead `name` pattern rejects digits, so `"Buyer 1"` is a 400. Intentional, but it surprises when writing test data.
+
+---
+
+## 9. Phase 2B — Done
+
+Media API on Cloudinary. `GET/POST /admin/media`, `/upload`, `/:id`, `/:id/replace`, `DELETE /:id`.
+
+**Security decisions worth not re-litigating:**
+
+**SVG is not on the allowlist.** SVG is XML and executes script; accepting it safely needs a real DOM-parsing sanitiser. [SECURITY_ARCHITECTURE.md §7](SECURITY_ARCHITECTURE.md) says drop the format rather than ship a weak sanitiser, and nothing needs it — the logo is a PNG. Revisit only with a proper sanitiser.
+
+**Magic bytes are hand-rolled in `utils/fileType.ts`**, not from `file-type`. The allowlist is four fixed formats, the checks are a dozen bytes each, and `file-type` is ESM-only which fights this CommonJS build. Verified: an SVG-with-script renamed `.png` is rejected, as are GIF bytes named `.png`.
+
+**Dimensions are parsed from the file header** (PNG IHDR, JPEG SOF, WebP VP8/VP8L) so `width`/`height` are stored at upload — that is what lets the front end reserve layout space and avoid CLS.
+
+**Nothing touches server disk.** Multer memory storage, streamed to Cloudinary. No temp directory, no path traversal via filename, no leftovers.
+
+**Filenames are regenerated** (`sanitised-stem-<uuid8>`); the client's name is kept only as a display label.
+
+**Dedupe by SHA-256** — re-uploading identical bytes returns the existing record with `wasDuplicate: true` rather than making a second copy.
+
+**Delete is blocked while `usageCount > 0`** and returns 409 naming the count. Replace keeps the same `_id`, so every embedded reference picks up the new file; the old binary is destroyed only *after* the record points at the new one.
+
+**Batch uploads are sequential, not parallel** — 10 × 5MB in parallel would hold 50MB in memory and open 10 streams.
+
+**Env naming:** Cloudinary's dashboard labels its credentials "API Key"/"API Secret", so they often land in `.env` unprefixed. Both `CLOUDINARY_API_KEY` and bare `API_KEY` are read, prefixed wins, and the fallback warns — a bare `API_KEY` will collide with the next service added.
+
+**Not built yet:** `GET /media/:id/usage` (needs the catalogue in 2C to have referrers), and `usageCount` is only ever incremented by `incrementUsage` — nothing calls it until products reference media.
