@@ -4,11 +4,13 @@ import helmet from "helmet";
 import compression from "compression";
 import hpp from "hpp";
 import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
 
 import { env } from "./config/env";
 import { logger } from "./config/logger";
 import contactRoutes from "./routes/contactRoutes";
+import authRoutes from "./routes/auth.routes";
 import { leadLimiter, globalLimiter } from "./middleware/rateLimit";
 import { requestId } from "./middleware/requestId";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
@@ -52,6 +54,9 @@ export function createApp(): Application {
   app.use(express.json({ limit: "100kb" }));
   app.use(express.urlencoded({ limit: "100kb", extended: false }));
 
+  // Refresh token travels as an HttpOnly cookie.
+  app.use(cookieParser());
+
   // 6. Strip $ and . from keys, so a crafted payload cannot smuggle a
   //    MongoDB operator into a query. docs/SECURITY_ARCHITECTURE.md §6
   app.use(mongoSanitize());
@@ -82,7 +87,13 @@ export function createApp(): Application {
   // 11. maintenanceGuard — added in Phase 1D, once `settings` exists.
 
   // 12. Routes.
+  //
+  // Legacy alias, permanent. docs/API_SPECIFICATION.md §9
   app.use("/api/contact", leadLimiter, contactRoutes);
+
+  // Versioned API.
+  app.use("/api/v1/leads", leadLimiter, contactRoutes);
+  app.use("/api/v1/admin/auth", authRoutes);
 
   app.get("/", (_req: Request, res: Response) => {
     res.send("Dhudhat DEF API is running...");
