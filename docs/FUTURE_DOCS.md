@@ -32,6 +32,7 @@
 | Document | Purpose |
 |---|---|
 | [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) | Phases, dependencies, gates, risk |
+| [PHASE_1_REVIEW.md](PHASE_1_REVIEW.md) | Phase 1 exit review — 3 high, 6 medium, 11 low |
 | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | Superseded — original phase intent |
 
 ## Not Yet Written

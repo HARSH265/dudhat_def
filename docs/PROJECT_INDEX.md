@@ -24,6 +24,7 @@ Routing table. Find your task, read only the listed files.
 | Meta tags, sitemap, structured data | `SEO_ARCHITECTURE.md` | — |
 | Performance / Core Web Vitals | `SEO_ARCHITECTURE.md` §6 | — |
 | "What do I work on next?" | `IMPLEMENTATION_ROADMAP.md` | Everything else |
+| Fixing Phase 1 debt | `PHASE_1_REVIEW.md` | Everything else — it names the file and line |
 | Placeholder / dummy values | `SEED_DATA.md` | Everything else |
 | Understand project purpose | `PROJECT_BIBLE.md` | Everything else |
 
