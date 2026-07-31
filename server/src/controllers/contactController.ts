@@ -1,47 +1,24 @@
 import type { Request, Response } from "express";
-import Contact from "../models/Contact";
+import { contactService } from "../services/contact.service";
+import type { ContactInput } from "../validators/contact.validator";
 
-// @desc    Save a new contact form submission
-// @route   POST /api/contact
-//
-// NOTE: validation, business logic and persistence are still in one function.
-// Split into validator + service + repository in Phase 1B.
-// docs/API_SPECIFICATION.md §3
-export const submitContact = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { name, email, phone, company, message } = req.body ?? {};
+/**
+ * Reads validated input, calls one service, shapes the response.
+ * No validation, no business rules, no database access, no try/catch —
+ * asyncHandler forwards rejections to the central error handler.
+ * docs/ARCHITECTURE.md, docs/API_SPECIFICATION.md §3
+ *
+ * @route POST /api/contact
+ */
+export async function submitContact(req: Request, res: Response): Promise<void> {
+  const result = await contactService.submit(req.body as ContactInput);
 
-    if (!name || !email || !phone || !message) {
-      return res.status(400).json({
-        success: false,
-        message: "Please fill all required fields (name, email, phone, message)",
-      });
-    }
-
-    const newContact = await Contact.create({
-      name,
-      email,
-      phone,
-      company,
-      message,
-    });
-
-    // Response carries the identifier only. Previously it returned the whole
-    // document, disclosing internal fields to an anonymous caller.
-    // docs/API_SPECIFICATION.md §4.3
-    return res.status(201).json({
-      success: true,
-      message: "Thank you! Your message has been sent successfully.",
-      data: { id: newContact.id },
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong. Please try again later.",
-    });
-  }
-};
+  // Identical response whether stored or discarded as spam, and identical
+  // to the pre-refactor string — ContactForm.jsx renders it directly.
+  // docs/API_SPECIFICATION.md §9
+  res.status(201).json({
+    success: true,
+    message: "Thank you! Your message has been sent successfully.",
+    data: result.discarded ? {} : { id: result.id },
+  });
+}
