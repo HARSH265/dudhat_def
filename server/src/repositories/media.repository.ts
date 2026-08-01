@@ -1,4 +1,4 @@
-import type { FilterQuery, Types } from "mongoose";
+import mongoose, { type FilterQuery, type Types } from "mongoose";
 import Media, { type IMedia, type MediaFolder } from "../models/Media";
 import type { MediaListQuery } from "../validators/media.validator";
 import type { Paged } from "./lead.repository";
@@ -25,7 +25,12 @@ export const mediaRepository = {
     if (q.search) filter.$text = { $search: q.search };
     // "unused" is the practical way to find assets safe to delete.
     if (q.unusedOnly) filter.usageCount = 0;
-    if (q.missingAlt) filter.$or = [{ alt: { $exists: false } }, { alt: "" }];
+    // trusted(): $or branches are cast against their paths just like a
+    // top-level filter, so the operator inside needs the same protection.
+    // docs/MONGOOSE_GOTCHAS.md §1
+    if (q.missingAlt) {
+      filter.$or = [{ alt: mongoose.trusted({ $exists: false }) }, { alt: "" }];
+    }
 
     const [items, total] = await Promise.all([
       Media.find(filter)

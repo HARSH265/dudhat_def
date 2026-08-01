@@ -191,7 +191,10 @@ function buildFilter(q: LeadListQuery): FilterQuery<ILead> {
     const range: Record<string, Date> = {};
     if (q.from) range["$gte"] = q.from;
     if (q.to) range["$lte"] = q.to;
-    filter.createdAt = range;
+    // trusted(): buildFilter feeds Lead.find(), which applies sanitizeFilter.
+    // Without this the date-range filter throws a cast error rather than
+    // filtering. docs/MONGOOSE_GOTCHAS.md §1
+    filter.createdAt = mongoose.trusted(range);
   }
 
   if (q.search) filter.$text = { $search: q.search };

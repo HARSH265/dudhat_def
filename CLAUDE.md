@@ -35,6 +35,8 @@ Every page pushes toward: Request Quote · Contact Us · Call Now · WhatsApp In
 
 **No business logic in controllers.** Controller → Service → Repository. Controllers handle requests; services hold logic; repositories touch the database.
 
+**Read `docs/MONGOOSE_GOTCHAS.md` before any repository, query, session or token change.** It documents verified Mongoose traps that have already caused production-risk bugs here — one cause produced three separate incidents. Rules: `docs/CLAUDE_RULES.md` § Mongoose Safety Rules.
+
 **No secrets in code, logs, error responses, or the client bundle.**
 
 **Placeholder data must not reach production.** All dummy values live in `docs/SEED_DATA.md` and are marked `[PLACEHOLDER]`. The launch gate is in that file.

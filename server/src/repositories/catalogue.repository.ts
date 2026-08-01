@@ -1,4 +1,4 @@
-import type { FilterQuery, Types } from "mongoose";
+import mongoose, { type FilterQuery, type Types } from "mongoose";
 import Category, { type ICategory } from "../models/Category";
 import Product, { type IProduct } from "../models/Product";
 import type { Paged } from "./lead.repository";
@@ -6,6 +6,15 @@ import type {
   CategoryListQuery,
   ProductListQuery,
 } from "../validators/catalogue.validator";
+
+/**
+ * A user-supplied search string reaches a $regex. Without escaping, input
+ * like `(((((` is a malformed pattern (500) and `(a+)+$` is catastrophic
+ * backtracking — a denial of service from a search box.
+ */
+function escapeRegex(input: string): string {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 export const categoryRepository = {
   async create(data: Partial<ICategory>): Promise<ICategory> {
@@ -30,7 +39,12 @@ export const categoryRepository = {
     const filter: FilterQuery<ICategory> = { isDeleted: false };
     if (q.status) filter.status = q.status;
     if (q.parentId) filter.parentId = q.parentId;
-    if (q.search) filter.name = { $regex: q.search, $options: "i" };
+    // trusted(): this filter reaches Category.find(), which applies
+    // sanitizeFilter's $eq wrapping and would fail to cast the operator
+    // object against the String path. docs/MONGOOSE_GOTCHAS.md §1
+    if (q.search) {
+      filter.name = mongoose.trusted({ $regex: escapeRegex(q.search), $options: "i" });
+    }
 
     const [items, total] = await Promise.all([
       Category.find(filter)

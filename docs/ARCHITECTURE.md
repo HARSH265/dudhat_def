@@ -34,6 +34,17 @@ Tailwind and Shadcn apply **here only**. The admin panel is a new surface with n
 - MongoDB
 - Mongoose
 
+## Database Layer
+
+- MongoDB + Mongoose
+- Controller → Service → Repository; only repositories issue queries
+- Schemas, indexes and migrations: [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md)
+- **Query safety: [MONGOOSE_GOTCHAS.md](MONGOOSE_GOTCHAS.md) — mandatory reading before any repository, session, token or query change.** It documents verified Mongoose behaviours that have already produced production-risk bugs in this codebase, including three separate incidents from one cause. Enforced by [CLAUDE_RULES.md](CLAUDE_RULES.md) § Mongoose Safety Rules.
+
+Runtime settings applied in `src/config/db.ts` before models load:
+`strictQuery: true`, `sanitizeFilter: true`, `autoIndex` off in production.
+Each has a documented consequence — see MONGOOSE_GOTCHAS §1 and §3.
+
 ## Storage
 - Cloudinary
 

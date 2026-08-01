@@ -20,6 +20,7 @@
 | Document | Purpose |
 |---|---|
 | [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md) | Collections, indexes, migrations |
+| [MONGOOSE_GOTCHAS.md](MONGOOSE_GOTCHAS.md) | Verified Mongoose traps — mandatory before query work |
 | [API_SPECIFICATION.md](API_SPECIFICATION.md) | Endpoints, conventions, middleware |
 | [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) | Product, packaging variants, specifications |
 | [COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md) | Frontend layers, section renderer, data layer |

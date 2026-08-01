@@ -14,7 +14,8 @@ Routing table. Find your task, read only the listed files.
 | Change styling / CSS | `DESIGN_SYSTEM.md` + the component file | Everything else |
 | Responsive / breakpoint work | `DESIGN_SYSTEM.md` § Responsive | Architecture docs |
 | Add or change an API endpoint | `API_SPECIFICATION.md` | `ADMIN_PANEL_SPECIFICATION.md`, `SEO_*` |
-| Schema / collection / index work | `DATABASE_ARCHITECTURE.md` | `API_SPECIFICATION.md` unless the contract changes |
+| Schema / collection / index work | `DATABASE_ARCHITECTURE.md` + **`MONGOOSE_GOTCHAS.md`** | `API_SPECIFICATION.md` unless the contract changes |
+| **Any repository / query / session / token work** | **`MONGOOSE_GOTCHAS.md` first** | Everything else — it is short and it is mandatory |
 | Product or packaging modelling | `PRODUCT_DATA_MODEL.md` + `SEED_DATA.md` §1, §3 | `DATABASE_ARCHITECTURE.md` (product section is duplicated there in summary only) |
 | Build a React component | `COMPONENT_ARCHITECTURE.md` §0, §3, §4 | Backend docs |
 | Build a CMS section renderer | `COMPONENT_ARCHITECTURE.md` §6 + `DATABASE_ARCHITECTURE.md` §5.6 | — |
@@ -46,6 +47,7 @@ Routing table. Find your task, read only the listed files.
 | `SEED_DATA.md` | M | Every placeholder value + replacement checklist |
 | `PRODUCT_DATA_MODEL.md` | L | Product, variants, specifications, structured data |
 | `DATABASE_ARCHITECTURE.md` | XL | 11 collections, indexes, migrations |
+| `MONGOOSE_GOTCHAS.md` | M | **Mandatory before any query change.** Verified Mongoose traps that have already caused production-risk bugs |
 | `API_SPECIFICATION.md` | XL | 62 endpoints, conventions, middleware |
 | `COMPONENT_ARCHITECTURE.md` | L | Frontend layers, section renderer, data layer |
 | `ADMIN_PANEL_SPECIFICATION.md` | L | 14 screens, roles, permissions |
@@ -92,7 +94,7 @@ Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run bui
 | `src/models/index.ts` | **Model registry.** A new model must be added here or index sync and the startup assertion miss it | Adding a model |
 | `src/controllers/` | `contactController` (public lead), `auth`, `lead`, `media`, `catalogue` | Endpoint work |
 | `src/services/` | Business logic. `leadAdmin`, `auth`, `media`, `category`, `product`, `mediaUsage`, `dashboard`, `audit` | Any rule change |
-| `src/repositories/` | Queries only. `lead`, `user`, `refreshToken`, `media`, `catalogue` | Query work |
+| `src/repositories/` | Queries only. `lead`, `user`, `refreshToken`, `media`, `catalogue`. **Read `MONGOOSE_GOTCHAS.md` before editing** | Query work |
 | `src/validators/` | zod schemas: `contact`, `auth`, `lead`, `media`, `catalogue` | Input rules |
 | `src/routes/admin/` | `index.ts` (mount + `authenticate`), `lead`, `media`, `catalogue` | Routing work |
 | `src/middleware/` | `rateLimit`, `requestId`, `errorHandler`, `validate`, `authenticate`, `authorize`, `upload` | Cross-cutting work |
@@ -110,6 +112,8 @@ Facts already established. Trust these instead of re-investigating.
 **Phase 0, Phase 1 and Phase 2A–2E are complete.** See §5–10. The admin app lives in `admin/` — see `ADMIN_UI_ARCHITECTURE.md`.
 
 **Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, Cloudinary media, 10 collections. No React Query, no Tailwind, no tests, no admin UI yet.
+
+**Mongoose traps are documented, not folklore.** `MONGOOSE_GOTCHAS.md` records five behaviours that have already caused production-risk bugs here, each verified empirically. `sanitizeFilter` breaking raw query operators on `find`/`update` (but not `countDocuments`) has caused three separate incidents. Do not rediscover them.
 
 **Toolchain notes worth not rediscovering:** TypeScript 7.0.2 is the native port — `ts-node` is incompatible with it (targets the TS 5.x API) and `tsx` needs an esbuild binary whose postinstall is blocked here. Build is plain `tsc`. `moduleResolution: node10` was removed in TS 7; use `node16`. Node 24 can run `.ts` natively if a loader is ever needed.
 
