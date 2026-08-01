@@ -28,6 +28,7 @@ Routing table. Find your task, read only the listed files.
 | "What do I work on next?" | `IMPLEMENTATION_ROADMAP.md` | Everything else |
 | Fixing Phase 1 debt | `PHASE_1_REVIEW.md` | Everything else — it names the file and line |
 | Catalogue / publish gate work | `PHASE_2C_REVIEW.md` + `PRODUCT_DATA_MODEL.md` | Everything else |
+| Rich text / description field | `RICH_TEXT_EDITOR_DECISION.md` | Everything else — it carries the allowlist |
 | Placeholder / dummy values | `SEED_DATA.md` | Everything else |
 | Understand project purpose | `PROJECT_BIBLE.md` | Everything else |
 
