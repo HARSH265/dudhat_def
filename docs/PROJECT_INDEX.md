@@ -18,7 +18,8 @@ Routing table. Find your task, read only the listed files.
 | Product or packaging modelling | `PRODUCT_DATA_MODEL.md` + `SEED_DATA.md` §1, §3 | `DATABASE_ARCHITECTURE.md` (product section is duplicated there in summary only) |
 | Build a React component | `COMPONENT_ARCHITECTURE.md` §0, §3, §4 | Backend docs |
 | Build a CMS section renderer | `COMPONENT_ARCHITECTURE.md` §6 + `DATABASE_ARCHITECTURE.md` §5.6 | — |
-| Admin panel screen | `ADMIN_PANEL_SPECIFICATION.md` | Public-site docs |
+| Admin panel screen | `ADMIN_PANEL_SPECIFICATION.md` + `ADMIN_UI_ARCHITECTURE.md` | Public-site docs |
+| Any security question | `SECURITY_TODO.md` first, then `SECURITY_ARCHITECTURE.md` | Everything else |
 | Auth / permissions | `ADMIN_PANEL_SPECIFICATION.md` §4 + `API_SPECIFICATION.md` §5.1 | `SECURITY_ARCHITECTURE.md` unless changing the model |
 | Security control or review | `SECURITY_ARCHITECTURE.md` | — |
 | Meta tags, sitemap, structured data | `SEO_ARCHITECTURE.md` | — |

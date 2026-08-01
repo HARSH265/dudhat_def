@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/**
+ * Admin design tokens. docs/ADMIN_UI_ARCHITECTURE.md §6
+ *
+ * Brand colour and typeface are inherited so the panel is recognisably the
+ * same product. Spacing, radius and density are NOT — the public site's scale
+ * is tuned for a marketing page and wastes vertical space in a data view.
+ */
+@theme {
+  --color-brand-50: #eef3fa;
+  --color-brand-100: #d3e0f0;
+  --color-brand-500: #1d4e8f;
+  --color-brand-600: #143c73;
+  --color-brand-700: #0a2a5e;
+  --color-brand-800: #071d43;
+
+  --color-accent-50: #eaf7ee;
+  --color-accent-500: #2e9e4f;
+  --color-accent-600: #24803f;
+
+  /* Lead pipeline. Semantic, not decorative — identical across the list, the
+     board and the dashboard. Every status is also labelled in text, so colour
+     is never the only signal. */
+  --color-status-new: #0a2a5e;
+  --color-status-contacted: #0891b2;
+  --color-status-qualified: #7c3aed;
+  --color-status-quotation: #d97706;
+  --color-status-won: #2e9e4f;
+  --color-status-lost: #64748b;
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  /* 14px base. The public site uses 16px; a back office trades reading
+     comfort for information density. */
+  font-size: 14px;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: #f6f7f9;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus is a requirement, not a preference. §8 */
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+/* Animation policy §7: motion only where its absence would be confusing. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

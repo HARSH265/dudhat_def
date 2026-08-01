@@ -26,6 +26,8 @@
 | [ADMIN_PANEL_SPECIFICATION.md](ADMIN_PANEL_SPECIFICATION.md) | Admin screens, roles, permissions |
 | [SECURITY_ARCHITECTURE.md](SECURITY_ARCHITECTURE.md) | Threat model, controls, secrets, PII |
 | [SEO_ARCHITECTURE.md](SEO_ARCHITECTURE.md) | Rendering strategy, metadata, Core Web Vitals |
+| [SECURITY_TODO.md](SECURITY_TODO.md) | Deferred security items register — S1–S13 |
+| [ADMIN_UI_ARCHITECTURE.md](ADMIN_UI_ARCHITECTURE.md) | Admin app build: stack, auth flow, design tokens |
 
 ## Execution
 

@@ -15,10 +15,15 @@
 ## Frontend — Admin Panel (`admin/`)
 - React
 - Vite
-- Javascript
-- React Query
+- **TypeScript** (changed from JavaScript in Phase 2D — the API surface is
+  40+ endpoints across 10 models, and untyped response handling would be a
+  steady source of runtime bugs. The server is TypeScript; sharing shapes
+  across a language boundary means maintaining them twice)
+- TanStack Query
 - Tailwind
 - Shadcn UI
+
+Build detail: [ADMIN_UI_ARCHITECTURE.md](ADMIN_UI_ARCHITECTURE.md).
 
 Tailwind and Shadcn apply **here only**. The admin panel is a new surface with no approved design to preserve, so an off-the-shelf component system is the right call.
 
