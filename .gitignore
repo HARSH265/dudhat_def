@@ -3,7 +3,12 @@ node_modules/
 .env.production
 build/
 dist/
-docs/
+
+# NOTE: `docs/` was ignored here between roughly Phase 2D and 2F. Git keeps
+# tracking files it already tracks, so the 19 docs committed before that kept
+# working while every document created afterwards was silently dropped —
+# including MONGOOSE_GOTCHAS.md and SECURITY_TODO.md. Do not re-add it: the
+# documentation is the project's primary asset right now.
 
 # Personal Claude Code config — project config lives in .claude/settings.json
 .claude/settings.local.json
