@@ -231,7 +231,7 @@ Field-by-field rationale, DEF specification model, and packaging-variant design 
 | `categoryName` | String | denormalised |
 | `shortDescription` | String | max 300 |
 | `description` | String | rich text (sanitised HTML) |
-| `specifications` | [SpecItem] | embedded array |
+| `specifications` | [SpecItem] | embedded array. Each row carries `isPlaceholder`; the publish gate refuses a product while any is `true` |
 | `applications` | [String] | |
 | `packaging` | [PackagingVariant] | embedded array |
 | `primaryImage` | ImageRef | |
@@ -584,7 +584,7 @@ Seeds the singleton from the literals currently in `Footer.jsx` and `Contact.jsx
 | Rule | Enforced at |
 |---|---|
 | Slug uniqueness | Unique partial index + service-level pre-check for a friendly error |
-| Slug immutability after publish | Service layer; change creates a `redirects` record |
+| Slug immutability after publish | Service layer. **Currently a hard refusal (409)** — `redirects` is Phase 3, so allowing the change would silently break inbound links and indexed URLs. Becomes "change creates a `redirects` record" once that collection exists |
 | Referential integrity (`categoryId`, `mediaId`, `productId`) | Service layer — MongoDB has no foreign keys |
 | Cascade on category archive | Blocked if published products reference it |
 | Cascade on media delete | Blocked if `usageCount > 0` |

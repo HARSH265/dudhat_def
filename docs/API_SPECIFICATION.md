@@ -446,7 +446,13 @@ Query: `from`, `to` (default: last 30 days). Served from the daily rollup, not r
 
 **Create/update validation:** `name` required; `slug` auto-generated from `name` if omitted, uniqueness-checked, returns `409 DUPLICATE_SLUG` on collision; `categoryId` must reference a non-deleted category; every `mediaId` must resolve; `description` is sanitised against an HTML allowlist; `specifications[]` validated per [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §4.
 
-**Publish rules:** publishing requires `primaryImage`, `shortDescription`, and at least one specification. A `422` lists what is missing rather than publishing a half-empty product page. Changing the slug of a published product creates a `redirects` record automatically.
+**Publish rules (implemented in Phase 2C).** Publishing requires `primaryImage`, `shortDescription`, at least one specification, and at least one available packaging variant. A `422` lists **every** blocker at once rather than the first — a dialog revealing one problem at a time makes the editor guess how many remain.
+
+The gate additionally refuses:
+- any specification with `isPlaceholder: true` — these are published ISO limits, not this product's measured results, and shipping them as results misstates the product to buyers who purchase on specification;
+- any `[PLACEHOLDER]` marker in `badges`, `tagline` or `shortDescription` — a badge reading `[PLACEHOLDER] ISO 22241` asserts a certification with no evidence behind it.
+
+**Slug changes on a published product currently return `409`.** The redirect-on-change behaviour described in [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md) §9 needs the `redirects` collection, which is Phase 3; until then the change is refused rather than silently breaking inbound links. Unpublish first to rename.
 
 ### 5.5 Categories
 

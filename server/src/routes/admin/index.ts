@@ -1,6 +1,7 @@
 import { Router } from "express";
 import leadRoutes from "./lead.routes";
 import mediaRoutes from "./media.routes";
+import { categoryRouter, productRouter } from "./catalogue.routes";
 import { getDashboard } from "../../controllers/lead.controller";
 import { authenticate } from "../../middleware/authenticate";
 import { authorize } from "../../middleware/authorize";
@@ -34,5 +35,7 @@ router.get(
 
 router.use("/leads", leadRoutes);
 router.use("/media", mediaRoutes);
+router.use("/categories", categoryRouter);
+router.use("/products", productRouter);
 
 export default router;

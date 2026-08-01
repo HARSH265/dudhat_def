@@ -25,6 +25,7 @@ Routing table. Find your task, read only the listed files.
 | Performance / Core Web Vitals | `SEO_ARCHITECTURE.md` §6 | — |
 | "What do I work on next?" | `IMPLEMENTATION_ROADMAP.md` | Everything else |
 | Fixing Phase 1 debt | `PHASE_1_REVIEW.md` | Everything else — it names the file and line |
+| Catalogue / publish gate work | `PHASE_2C_REVIEW.md` + `PRODUCT_DATA_MODEL.md` | Everything else |
 | Placeholder / dummy values | `SEED_DATA.md` | Everything else |
 | Understand project purpose | `PROJECT_BIBLE.md` | Everything else |
 
@@ -76,7 +77,7 @@ Read a source file only when changing it. This table replaces exploratory readin
 | `pages/*.jsx` | 8 pages, each with content hardcoded in local arrays | Migrating that page to CMS |
 | `assets/images/` | 14 PNGs, 8.3MB, unoptimised | Never read — reference by path |
 
-### `server/` — API (Express + TypeScript, 1 endpoint)
+### `server/` — API (Express + TypeScript, 40+ endpoints)
 
 Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run build && npm start`. `npm run typecheck` for types only.
 
@@ -86,10 +87,16 @@ Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run bui
 | `src/app.ts` | Express assembly: helmet, CORS allowlist, body limits, routes, 404, error handler | Middleware work |
 | `src/config/env.ts` | Validated env access; throws a named error on a missing required var | Adding an env var |
 | `src/config/db.ts` | Mongoose connect, pool options, lifecycle listeners, `sanitizeFilter` | Connection work |
-| `src/models/Contact.ts` | The only schema — 5 fields, no indexes. Superseded by `leads` in 1D | Lead model work |
-| `src/controllers/contactController.ts` | `submitContact`; still validation + logic + persistence in one place | Lead endpoint work |
-| `src/routes/contactRoutes.ts` | `POST /` only | Routing work |
-| `src/middleware/rateLimit.ts` | `leadLimiter`, `globalLimiter` | Rate limit work |
+| `src/models/` | 10 models + `index.ts` registry + `shared.ts` (SeoMeta, ContentStatus) | Schema work |
+| `src/models/index.ts` | **Model registry.** A new model must be added here or index sync and the startup assertion miss it | Adding a model |
+| `src/controllers/` | `contactController` (public lead), `auth`, `lead`, `media`, `catalogue` | Endpoint work |
+| `src/services/` | Business logic. `leadAdmin`, `auth`, `media`, `category`, `product`, `mediaUsage`, `dashboard`, `audit` | Any rule change |
+| `src/repositories/` | Queries only. `lead`, `user`, `refreshToken`, `media`, `catalogue` | Query work |
+| `src/validators/` | zod schemas: `contact`, `auth`, `lead`, `media`, `catalogue` | Input rules |
+| `src/routes/admin/` | `index.ts` (mount + `authenticate`), `lead`, `media`, `catalogue` | Routing work |
+| `src/middleware/` | `rateLimit`, `requestId`, `errorHandler`, `validate`, `authenticate`, `authorize`, `upload` | Cross-cutting work |
+| `src/utils/` | `AppError`, `asyncHandler`, `crypto`, `jwt`, `phone`, `slug`, `fileType` | Shared helpers |
+| `src/scripts/` | `syncIndexes`, `seedAdmin`, `seedSettings`, `migrateContactsToLeads`, `reconcileMediaUsage` | Ops tasks |
 | `tsconfig.json` | `node16` modules, `strict`, `noUncheckedIndexedAccess` | Compiler config |
 | `.env.example` | All 20 env vars, grouped by phase | Setting up |
 
@@ -99,9 +106,9 @@ Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run bui
 
 Facts already established. Trust these instead of re-investigating.
 
-**Phase 0 is complete.** See §5 for what it changed.
+**Phase 0, Phase 1 and Phase 2A–2C are complete.** See §5–10.
 
-**Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, no React Query, no Tailwind, no Cloudinary, no tests.
+**Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, Cloudinary media, 10 collections. No React Query, no Tailwind, no tests, no admin UI yet.
 
 **Toolchain notes worth not rediscovering:** TypeScript 7.0.2 is the native port — `ts-node` is incompatible with it (targets the TS 5.x API) and `tsx` needs an esbuild binary whose postinstall is blocked here. Build is plain `tsc`. `moduleResolution: node10` was removed in TS 7; use `node16`. Node 24 can run `.ts` natively if a loader is ever needed.
 

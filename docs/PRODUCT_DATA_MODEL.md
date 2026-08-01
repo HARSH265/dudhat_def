@@ -126,6 +126,7 @@ The technical table. Structured rows, not a rich-text blob, so they can be filte
 | `standard` | String | no | Test method — `"ISO 22241-2"` |
 | `order` | Number | no | Sort within group |
 | `isKey` | Boolean | no | Surfaces in the card/summary strip |
+| `isPlaceholder` | Boolean | no | Marks a published *standard limit* rather than a measured result from this product's Certificate of Analysis. **The publish gate refuses any product still carrying one** — see [SEED_DATA.md](SEED_DATA.md) § Launch Gate. Added in Phase 2C; it was referenced by the launch gate before the field existed |
 
 **`value` as String is deliberate.** DEF specifications are expressed as limits and ranges far more often than as single numbers. Forcing them numeric would mean either losing the qualifier or inventing `min`/`max`/`operator` columns that most rows leave empty. The trade-off is no numeric filtering — acceptable, since nobody filters DEF by refractive index.
 

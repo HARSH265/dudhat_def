@@ -11,7 +11,8 @@
     "sync:indexes": "tsc && node dist/scripts/syncIndexes.js",
     "seed:admin": "tsc && node dist/scripts/seedAdmin.js",
     "seed:settings": "tsc && node dist/scripts/seedSettings.js",
-    "migrate:leads": "tsc && node dist/scripts/migrateContactsToLeads.js"
+    "migrate:leads": "tsc && node dist/scripts/migrateContactsToLeads.js",
+    "reconcile:media": "tsc && node dist/scripts/reconcileMediaUsage.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
