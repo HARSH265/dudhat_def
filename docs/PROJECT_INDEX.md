@@ -1,6 +1,7 @@
 # Project Index
 
-> **New session? Read [PHASE_2F_HANDOVER.md](PHASE_2F_HANDOVER.md) first.** It is the single source of truth for project state and needs no prior conversation.
+> **New session? Read [PROJECT_STATUS.md](PROJECT_STATUS.md) first** — current phase, capabilities, open work, risks, next task. It is the living status document.
+> For how the project got here and why, [PHASE_2F_HANDOVER.md](PHASE_2F_HANDOVER.md) is the Phase 2F snapshot.
 
 Routing table. Find your task, read only the listed files.
 
@@ -27,7 +28,10 @@ Routing table. Find your task, read only the listed files.
 | Security control or review | `SECURITY_ARCHITECTURE.md` | — |
 | Meta tags, sitemap, structured data | `SEO_ARCHITECTURE.md` | — |
 | Performance / Core Web Vitals | `SEO_ARCHITECTURE.md` §6 | — |
-| "What do I work on next?" | `IMPLEMENTATION_ROADMAP.md` | Everything else |
+| "What do I work on next?" | `PROJECT_STATUS.md` §6 | Everything else |
+| "What is the state of the project?" | `PROJECT_STATUS.md` | Everything else — it is the living status doc |
+| Planning or starting Phase 3 | `PHASE_3_PLAN.md` + `PHASE_3_READINESS_REPORT.md` | `IMPLEMENTATION_ROADMAP.md` (superseded for Phase 3) |
+| Writing or running tests | `TESTING_STRATEGY.md` | Everything else |
 | Fixing Phase 1 debt | `PHASE_1_REVIEW.md` | Everything else — it names the file and line |
 | Catalogue / publish gate work | `PHASE_2C_REVIEW.md` + `PRODUCT_DATA_MODEL.md` | Everything else |
 | Rich text / description field | `RICH_TEXT_EDITOR_DECISION.md` | Everything else — it carries the allowlist |
@@ -56,7 +60,11 @@ Routing table. Find your task, read only the listed files.
 | `ADMIN_PANEL_SPECIFICATION.md` | L | 14 screens, roles, permissions |
 | `SECURITY_ARCHITECTURE.md` | L | Threat model, controls, PII, verification |
 | `SEO_ARCHITECTURE.md` | L | Rendering strategy, metadata, CWV |
-| `IMPLEMENTATION_ROADMAP.md` | M | Phases, gates, dependencies, blocking decisions |
+| `PROJECT_STATUS.md` | S | **Living state.** Phase, capabilities, open work, decisions, risks, next task |
+| `TESTING_STRATEGY.md` | M | Consequence-based method, workflow checklists, per-phase verification |
+| `PHASE_3_PLAN.md` | M | Phase 3 execution order and risks |
+| `PHASE_3_READINESS_REPORT.md` | S | What blocks Phase 3 and what to do first |
+| `IMPLEMENTATION_ROADMAP.md` | M | Phases, gates, dependencies. Superseded for Phase 3 by PHASE_3_PLAN |
 | `IMPLEMENTATION_PLAN.md` | XS | Superseded — do not read |
 
 ---

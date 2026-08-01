@@ -7,7 +7,7 @@ MERN brochure site being converted into a CMS-driven lead generation platform.
 
 ## Start Here
 
-0. New session with no prior context? Read `docs/PHASE_2F_HANDOVER.md` — full project state, no conversation history needed.
+0. New session with no prior context? Read `docs/PROJECT_STATUS.md` — the living status document. No conversation history needed.
 1. Read `docs/PROJECT_INDEX.md` — routing table for which docs a task needs.
 2. Read only what it lists. Usually 1–2 files.
 3. Do not read all documentation. Do not explore the codebase to build context.
@@ -96,4 +96,4 @@ Server: TypeScript 7 (`tsc` only — `ts-node` and `tsx` do not work here), `src
 Admin: Vite + React 19 + TS + Tailwind 4 + Tiptap at `/admin`. Leads, media, catalogue, SEO, profile all working.
 Still missing everywhere: **tests, CI, dependency scanning**.
 
-**Phase 0, Phase 1 and Phase 2 are complete.** The admin panel is functional; the public site still has content hardcoded. Next is Phase 3 (content cutover) — and prerendering must ship **before** content moves to the CMS. See `docs/PHASE_2F_HANDOVER.md` §15.
+**Phase 0, Phase 1 and Phase 2 are complete.** The admin panel is functional; the public site still has content hardcoded. Next is Phase 3 (content cutover) — and prerendering must ship **before** content moves to the CMS. See `docs/PHASE_3_READINESS_REPORT.md`.

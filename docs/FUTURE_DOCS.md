@@ -35,6 +35,10 @@
 
 | Document | Purpose |
 |---|---|
+| **[PROJECT_STATUS.md](PROJECT_STATUS.md)** | **Living status — read first in a new session** |
+| [TESTING_STRATEGY.md](TESTING_STRATEGY.md) | Consequence-based testing method and checklists |
+| [PHASE_3_PLAN.md](PHASE_3_PLAN.md) | Phase 3 execution plan |
+| [PHASE_3_READINESS_REPORT.md](PHASE_3_READINESS_REPORT.md) | Phase 3 blockers and first task |
 | [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) | Phases, dependencies, gates, risk |
 | [PHASE_1_REVIEW.md](PHASE_1_REVIEW.md) | Phase 1 exit review — 3 high, 6 medium, 11 low |
 | [PHASE_2C_REVIEW.md](PHASE_2C_REVIEW.md) | Phase 2C review — catalogue, publish gate, media usage |
@@ -49,7 +53,6 @@ Create only when the work is scheduled.
 
 | Document | Trigger |
 |---|---|
-| `TESTING_STRATEGY.md` | Before Phase 2 — needed once services carry business logic |
 | `DEPLOYMENT_GUIDE.md` | Before first production deploy |
 | `ANALYTICS_ARCHITECTURE.md` | Phase 3 — when dashboard metrics move beyond counts |
 | `CONTENT_MIGRATION_RUNBOOK.md` | Before Phase 3 content cutover |
