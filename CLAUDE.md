@@ -7,12 +7,16 @@ MERN brochure site being converted into a CMS-driven lead generation platform.
 
 ## Start Here
 
-0. New session with no prior context? Read `docs/PROJECT_STATUS.md` — the living status document. No conversation history needed.
-1. Read `docs/PROJECT_INDEX.md` — routing table for which docs a task needs.
-2. Read only what it lists. Usually 1–2 files.
-3. Do not read all documentation. Do not explore the codebase to build context.
+**Startup set — exactly three files, then stop and route:**
+1. This file (auto-loaded).
+2. `docs/PROJECT_STATUS.md` — what is true now.
+3. `docs/PROJECT_INDEX.md` — which document your task needs.
 
-`docs/PROJECT_INDEX.md` §4 holds established facts about the current state. Trust them rather than re-deriving.
+Then read the **one or two** documents the routing table lists. Nothing else.
+Do not read all documentation — it is ~370KB and routes you to the wrong files.
+Hierarchy and archive status: `docs/DOCUMENTATION_STRUCTURE.md`.
+
+`docs/PROJECT_STATUS.md` holds established facts about the current state. Trust them rather than re-deriving.
 
 ---
 
@@ -70,7 +74,7 @@ This repo has 39,580 files in `node_modules` and 8.3MB of images. Unfiltered sea
 
 **Do not re-read after editing.** Edit and Write error on failure; a successful edit needs no verification read.
 
-**Do not re-establish known facts.** The stack, the security issue, the rule violations, and the data defects are recorded in `docs/PROJECT_INDEX.md` §4. Re-investigating them is pure cost.
+**Do not re-establish known facts.** The stack, open risks and known defects are in `docs/PROJECT_STATUS.md`. Re-investigating them is pure cost.
 
 **Delegate wide searches.** A question spanning many files goes to an Explore subagent, which returns the conclusion instead of the file contents.
 
@@ -80,11 +84,12 @@ This repo has 39,580 files in `node_modules` and 8.3MB of images. Unfiltered sea
 
 | Don't | Do |
 |---|---|
-| Read all 15 docs before starting | Read the 1–2 the routing table lists |
+| Read all 30 docs before starting | Read the startup 3, then the 1–2 the routing table lists |
 | `Glob("**/*.jsx")` then read each | Look up the file in `PROJECT_INDEX.md` §3 |
 | Read `App.css` to change one class | Grep the class, read that block |
 | Re-read a file to confirm an edit landed | Trust the tool result |
 | Explore to "understand the codebase" | It is already documented — read the index |
+| Read a phase review for current state | They are HISTORICAL — read `PROJECT_STATUS.md` |
 | Repeat findings across documents | Cross-reference by section number |
 
 ---

@@ -1,5 +1,8 @@
 # Phase 2F Review — CMS Admin UI + S1 Sanitisation
 
+> **HISTORICAL.** Findings recorded. Kept for the record.
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > Scope: media library, product editor, categories, SEO panel, profile, change-password UI, and SECURITY_TODO S1.
 > Method: typecheck, production build, and behavioural testing against live Atlas and the real Cloudinary account.
 > Public site untouched — no file under `client/` was modified in this phase.

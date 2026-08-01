@@ -1,5 +1,7 @@
 # Phase 3 Readiness Report
 
+> **ACTIVE until Phase 3 begins**, then historical. Classification: [DOCUMENTATION_STRUCTURE.md](DOCUMENTATION_STRUCTURE.md).
+
 > Assessment only. Phase 3 has not started.
 > Plan: [PHASE_3_PLAN.md](PHASE_3_PLAN.md) · Status: [PROJECT_STATUS.md](PROJECT_STATUS.md)
 

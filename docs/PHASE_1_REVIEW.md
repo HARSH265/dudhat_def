@@ -1,5 +1,8 @@
 # Phase 1 Exit Review
 
+> **HISTORICAL.** Findings fixed and recorded. Kept for the record.
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > Scope: `server/` as of commit `0218fa8`. Review only — nothing was changed.
 > Method: static analysis plus behavioural testing against a running server on the live Atlas connection. Every finding below was reproduced, not inferred.
 > Related: [SECURITY_ARCHITECTURE.md](SECURITY_ARCHITECTURE.md), [API_SPECIFICATION.md](API_SPECIFICATION.md), [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md)

@@ -1,5 +1,8 @@
 # Phase 2E Security Review — S4, S5 and Session Invalidation
 
+> **HISTORICAL.** Findings fixed and recorded. Kept for the record.
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > Scope: the change-password endpoint, session listing and revocation, and the session-invalidation strategy behind them.
 > Method: behavioural testing against a running server on the live Atlas connection. Every result below was reproduced.
 > Closes [SECURITY_TODO.md](SECURITY_TODO.md) S4 (partly) and S5 (partly).

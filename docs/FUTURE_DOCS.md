@@ -1,5 +1,8 @@
 # Documentation Index
 
+> **HISTORICAL.** A second document inventory, superseded by [DOCUMENTATION_STRUCTURE.md](DOCUMENTATION_STRUCTURE.md) and [PROJECT_INDEX.md](PROJECT_INDEX.md).
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > For **which docs a task needs**, use [PROJECT_INDEX.md](PROJECT_INDEX.md) — it is the routing table.
 > This file is the inventory.
 

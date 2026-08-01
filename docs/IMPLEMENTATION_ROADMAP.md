@@ -1,5 +1,8 @@
 # Implementation Roadmap
 
+> **HISTORICAL for Phases 0–3.** Phases 0–2 are complete; Phase 3 is superseded by [PHASE_3_PLAN.md](PHASE_3_PLAN.md).
+> Retains value for Phases 4–5 only. For current state see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > Status: Planning document. No code written yet.
 > Supersedes [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 > Objective: convert the current brochure site into a CMS-driven lead generation platform **without changing the approved design**.

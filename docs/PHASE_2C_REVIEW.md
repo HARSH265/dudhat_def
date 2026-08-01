@@ -1,5 +1,8 @@
 # Phase 2C Review — Categories & Products
 
+> **HISTORICAL.** Findings fixed and recorded. Kept for the record.
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 > Scope: `server/` catalogue modules. Backend only — no public UI touched, design freeze respected.
 > Method: static typecheck plus behavioural testing against the live Atlas connection and the real Cloudinary account. Every result below was reproduced, not inferred.
 

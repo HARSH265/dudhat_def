@@ -1,5 +1,8 @@
 # CMS Blueprint
 
+> **HISTORICAL.** Original scope sketch, superseded by [ADMIN_PANEL_SPECIFICATION.md](ADMIN_PANEL_SPECIFICATION.md) and [DATABASE_ARCHITECTURE.md](DATABASE_ARCHITECTURE.md).
+> Do not read for current state — see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
 ## Dashboard
 - Total Leads
 - New Leads
