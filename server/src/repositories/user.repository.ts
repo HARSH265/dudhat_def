@@ -15,6 +15,25 @@ export const userRepository = {
     return User.findById(id);
   },
 
+  async findByIdWithPassword(id: Types.ObjectId): Promise<IUser | null> {
+    return User.findById(id).select("+passwordHash");
+  },
+
+  /**
+   * `passwordChangedAt` is set in the same write as the hash. `authenticate`
+   * compares it against a token's `iat`, so every access token issued before
+   * this moment stops working.
+   */
+  async setPassword(id: Types.ObjectId, passwordHash: string): Promise<void> {
+    await User.updateOne(
+      { _id: id },
+      {
+        $set: { passwordHash, passwordChangedAt: new Date() },
+        $unset: { passwordResetTokenHash: 1, passwordResetExpiresAt: 1 },
+      }
+    );
+  },
+
   async create(data: {
     name: string;
     email: string;

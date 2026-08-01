@@ -27,6 +27,18 @@ export const createUserSchema = z
   })
   .strip();
 
+/**
+ * Shape only. The real policy lives in utils/passwordPolicy so it applies
+ * identically to change-password, reset-password and admin user creation —
+ * a rule enforced in one schema is a rule missing from the others.
+ */
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Your current password is required."),
+    newPassword: z.string().min(1, "A new password is required.").max(200),
+  })
+  .strip();
+
 export const setUserStatusSchema = z.object({ isActive: z.boolean() }).strip();
 
 export const setUserRoleSchema = z.object({ role: z.enum(ROLES) }).strip();

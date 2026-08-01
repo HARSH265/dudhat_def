@@ -103,13 +103,27 @@ bcrypt, cost factor 12, re-evaluated annually. Argon2id is the stronger choice a
 
 ### Password policy
 
-Minimum 12 characters. No composition rules — mandated symbol classes produce `Password1!` and nothing else. Checked against the top-10k common-password list on set and on change. Rejected on match with a specific message, because a generic "invalid password" during a *set* operation is just confusing.
+Minimum 12 characters. No composition rules — mandated symbol classes produce `Password1!` and nothing else.
+
+Enforced in `utils/passwordPolicy`, **not** in a request schema, so change-password, reset-password and admin user creation share one implementation and cannot drift apart. Every failure is returned at once rather than the first, so the user fixes the password in one attempt.
+
+Rejected: common stems matched as **substrings** (not exact values — an exact-match list accepts `password123456`, which is what people pick when told to make it longer), the same stems with separators stripped, sequences, single repeated characters, and anything containing the user's email local part or first name.
+
+**Known narrowing.** This ships ~35 stems plus heuristics rather than the top-10k list. Shipping 10k entries inline is a poor trade for a handful of admin accounts, and a hosted breach-check API would send a password prefix to a third party. Most of those lists are variations on a small number of roots, which the stem approach catches. Recorded in [SECURITY_TODO.md](SECURITY_TODO.md) S4.
 
 ### Session invalidation
 
 Access tokens are stateless, so revocation is not immediate. Mitigations: 15-minute TTL caps the window; `passwordChangedAt` on the user is compared against the token's `iat`, invalidating every token issued before a password change; refresh tokens are stateful and revoked immediately.
 
-The events that revoke all of a user's refresh tokens: password change, password reset, account deactivation, role change, and detected refresh-token reuse.
+The events that revoke a user's refresh tokens: password change, password reset, account deactivation, role change, explicit logout, and detected refresh-token reuse.
+
+**Password change keeps the calling session alive.** Ending every session including the caller's would make the safe action feel like a punishment, which trains people not to take it. The sequence is: stamp `passwordChangedAt` (killing every existing *access* token), revoke every refresh token **except** the caller's, then rotate the caller's and issue a fresh access token. Other devices lose access within 15 minutes at most — immediately on their next refresh. Order matters: revoking everything before issuing would leave the caller with no valid session mid-write.
+
+**Revocation reasons are recorded, and reuse detection depends on them.** Each revoked token carries `revokedReason`: `rotated`, `logout`, `password_change`, `admin_action`, or `reuse_detected`.
+
+Reuse detection revokes a user's entire chain when a revoked token is presented — correct for `rotated`, which means a legitimately replaced token is being replayed. It is **wrong** for administrative revocation: after a password change signs other devices out, the first of those to attempt a refresh would otherwise trigger a chain revocation that also kills the session the password change deliberately preserved. That defect shipped and was caught in testing; see [PHASE_2E_SECURITY_REVIEW.md](PHASE_2E_SECURITY_REVIEW.md) §3.
+
+So: reuse detection fires only on `rotated` (or a missing reason, the conservative default for older rows). Everything else returns a plain `TOKEN_EXPIRED`.
 
 ### Refresh token reuse detection
 

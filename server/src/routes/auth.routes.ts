@@ -6,6 +6,7 @@ import { authorize } from "../middleware/authorize";
 import { validateBody } from "../middleware/validate";
 import { asyncHandler } from "../utils/asyncHandler";
 import {
+  changePasswordSchema,
   createUserSchema,
   loginSchema,
   setUserRoleSchema,
@@ -40,6 +41,23 @@ router.post("/logout", asyncHandler(authController.logout));
 // --- Authenticated ---
 router.get("/me", authenticate, asyncHandler(authController.me));
 router.post("/logout-all", authenticate, asyncHandler(authController.logoutAll));
+
+// Throttled like login: it accepts the current password, so it is an oracle
+// for guessing it. docs/SECURITY_TODO.md S4
+router.patch(
+  "/change-password",
+  authenticate,
+  loginLimiter,
+  validateBody(changePasswordSchema),
+  asyncHandler(authController.changePassword)
+);
+
+router.get("/sessions", authenticate, asyncHandler(authController.listSessions));
+router.delete(
+  "/sessions/:id",
+  authenticate,
+  asyncHandler(authController.revokeSession)
+);
 
 // User management is superadmin-only. docs/ADMIN_PANEL_SPECIFICATION.md §4
 router.get(

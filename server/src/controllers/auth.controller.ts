@@ -115,6 +115,57 @@ export async function logoutAll(req: Request, res: Response): Promise<void> {
   });
 }
 
+export async function changePassword(req: Request, res: Response): Promise<void> {
+  const { currentPassword, newPassword } = req.body as {
+    currentPassword: string;
+    newPassword: string;
+  };
+
+  const result = await authService.changePassword(
+    new mongoose.Types.ObjectId(req.user!.id),
+    currentPassword,
+    newPassword,
+    req.cookies?.[REFRESH_COOKIE] as string | undefined,
+    context(req)
+  );
+
+  // The caller's session is rotated rather than ended, so changing a password
+  // does not log you out of the device you are using.
+  res.cookie(
+    REFRESH_COOKIE,
+    result.refreshToken,
+    refreshCookieOptions(result.refreshExpiresAt)
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed. Other sessions have been signed out.",
+    data: { accessToken: result.accessToken, user: result.user },
+  });
+}
+
+export async function listSessions(req: Request, res: Response): Promise<void> {
+  const sessions = await authService.listSessions(
+    new mongoose.Types.ObjectId(req.user!.id),
+    req.cookies?.[REFRESH_COOKIE] as string | undefined
+  );
+  res.status(200).json({
+    success: true,
+    message: "Sessions fetched.",
+    data: sessions,
+  });
+}
+
+export async function revokeSession(req: Request, res: Response): Promise<void> {
+  await authService.revokeSession(
+    new mongoose.Types.ObjectId(req.user!.id),
+    req.params["id"]!,
+    req.cookies?.[REFRESH_COOKIE] as string | undefined,
+    context(req)
+  );
+  res.status(200).json({ success: true, message: "Session revoked.", data: {} });
+}
+
 export async function listUsers(_req: Request, res: Response): Promise<void> {
   const users = await authService.listUsers();
   res.status(200).json({ success: true, message: "Users fetched.", data: users });

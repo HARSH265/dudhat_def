@@ -369,7 +369,9 @@ All routes under `/api/v1/admin` require a valid access token. Role gates come f
 | `GET` | `/api/v1/admin/auth/me` | required | Current user + role + permissions |
 | `POST` | `/api/v1/admin/auth/forgot-password` | none | Always `200`, regardless of whether the email exists |
 | `POST` | `/api/v1/admin/auth/reset-password` | none | Token + new password; revokes all sessions |
-| `PATCH` | `/api/v1/admin/auth/change-password` | required | Current + new password |
+| `PATCH` | `/api/v1/admin/auth/change-password` | required | Current + new password. **Implemented** — see below |
+| `GET` | `/api/v1/admin/auth/sessions` | required | Active sessions, current one flagged |
+| `DELETE` | `/api/v1/admin/auth/sessions/:id` | required | Revoke one of your own sessions |
 
 **Token design**
 
@@ -381,6 +383,34 @@ All routes under `/api/v1/admin` require a valid access token. Role gates come f
 Refresh tokens rotate on every use. Reuse of a already-rotated token revokes the entire chain for that user and logs a `login_failed` audit event — that pattern means a stolen token.
 
 Access tokens are never written to `localStorage`. Login throttling: 5 failures per email per 15 min, then `423`-equivalent `ACCOUNT_LOCKED` for 30 minutes.
+
+**Revocation reasons.** Every refresh token records *why* it was revoked: `rotated`, `logout`, `password_change`, `admin_action`, `reuse_detected`. This is load-bearing — reuse detection fires only on `rotated`, because an administratively revoked token being presented is a signed-out device, not a stolen one. Treating the two alike revokes sessions that were deliberately preserved. See [PHASE_2E_SECURITY_REVIEW.md](PHASE_2E_SECURITY_REVIEW.md) §3.
+
+#### `PATCH /admin/auth/change-password`
+
+```json
+{ "currentPassword": "…", "newPassword": "…" }
+```
+
+Throttled at the login rate — accepting the current password makes it an oracle for guessing it.
+
+Returns a **new access token and rotates the refresh cookie**, so the calling device stays signed in while every other session is revoked. Response shape matches `login`.
+
+Rejections: `400` for a wrong current password, a new password identical to the current one, or any policy failure. Policy is enforced in `utils/passwordPolicy`, not in the schema, so change-password, reset-password and admin user creation cannot drift apart.
+
+#### `GET /admin/auth/sessions`
+
+```json
+{ "data": [
+  { "id": "…", "userAgent": "…", "createdAt": "…", "expiresAt": "…", "isCurrent": true }
+] }
+```
+
+`ipHash` is deliberately **not** returned — a salted hash means nothing to the user and only widens what a stolen response reveals.
+
+#### `DELETE /admin/auth/sessions/:id`
+
+Scoped to the caller's own sessions **in the query**, so an unknown or foreign id returns `404` rather than revealing existence. Revoking your own current session returns `400` with a pointer to sign-out.
 
 ### 5.2 Dashboard
 
