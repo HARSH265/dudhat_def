@@ -107,7 +107,7 @@ Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run bui
 
 Facts already established. Trust these instead of re-investigating.
 
-**Phase 0, Phase 1 and Phase 2A–2C are complete.** See §5–10.
+**Phase 0, Phase 1 and Phase 2A–2E are complete.** See §5–10. The admin app lives in `admin/` — see `ADMIN_UI_ARCHITECTURE.md`.
 
 **Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, Cloudinary media, 10 collections. No React Query, no Tailwind, no tests, no admin UI yet.
 

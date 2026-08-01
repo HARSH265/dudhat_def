@@ -4,6 +4,7 @@ import mediaRoutes from "./media.routes";
 import { categoryRouter, productRouter } from "./catalogue.routes";
 import { getDashboard } from "../../controllers/lead.controller";
 import { authenticate } from "../../middleware/authenticate";
+import { adminReadLimiter, adminWriteLimiter } from "../../middleware/rateLimit";
 import { authorize } from "../../middleware/authorize";
 import { validateQuery } from "../../middleware/validate";
 import { asyncHandler } from "../../utils/asyncHandler";
@@ -18,6 +19,17 @@ const router = Router();
  * docs/SECURITY_ARCHITECTURE.md §4
  */
 router.use(authenticate);
+
+// Per-user limits, applied after authenticate so req.user.id is the key.
+// Reads and writes are budgeted separately — a UI that paginates should not
+// exhaust the allowance for changing a lead's status.
+// docs/SECURITY_TODO.md S9
+router.use((req, res, next) => {
+  const isRead = req.method === "GET" || req.method === "HEAD";
+  return isRead
+    ? adminReadLimiter(req, res, next)
+    : adminWriteLimiter(req, res, next);
+});
 
 // Admin responses are never cached — stale lead data in a sales workflow is
 // worse than a round-trip. docs/API_SPECIFICATION.md §7

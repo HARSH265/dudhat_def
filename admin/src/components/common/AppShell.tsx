@@ -26,7 +26,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/leads", label: "Leads", icon: BarChart3, capability: "leads.read", comingSoon: true },
+  { to: "/leads", label: "Leads", icon: BarChart3, capability: "leads.read" },
   { to: "/products", label: "Products", icon: Package, capability: "catalogue.read", comingSoon: true },
   { to: "/categories", label: "Categories", icon: FolderTree, capability: "catalogue.read", comingSoon: true },
   { to: "/media", label: "Media", icon: Image, capability: "media.read", comingSoon: true },

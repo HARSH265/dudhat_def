@@ -3,8 +3,12 @@ import type { ReactNode } from "react";
 import { AppShell } from "@/components/common/AppShell";
 import { LoginPage } from "@/features/auth/LoginPage";
 import { DashboardPage } from "@/features/dashboard/DashboardPage";
+import { LeadListPage } from "@/features/leads/LeadListPage";
+import { LeadDetailPage } from "@/features/leads/LeadDetailPage";
+import { LeadBoardPage } from "@/features/leads/LeadBoardPage";
 import { useAuth } from "@/features/auth/AuthProvider";
 import { LoadingState } from "@/components/common/states";
+import { can, type Capability } from "@/lib/permissions";
 
 /**
  * Route guards hide screens a role cannot use. They are UX, not security —
@@ -31,6 +35,22 @@ function RequireAuth({ children }: { children: ReactNode }) {
     );
   }
 
+  return <>{children}</>;
+}
+
+/**
+ * Hides a screen the role cannot use. Still UX only — the endpoints behind it
+ * enforce the same rule server-side.
+ */
+function RequireCapability({
+  capability,
+  children,
+}: {
+  capability: Capability;
+  children: ReactNode;
+}) {
+  const { user } = useAuth();
+  if (!can(user?.role, capability)) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
 
@@ -61,6 +81,32 @@ export function AppRouter() {
         }
       >
         <Route index element={<DashboardPage />} />
+
+        {/* `board` is declared before `:id` so it is not read as a lead id. */}
+        <Route
+          path="leads"
+          element={
+            <RequireCapability capability="leads.read">
+              <LeadListPage />
+            </RequireCapability>
+          }
+        />
+        <Route
+          path="leads/board"
+          element={
+            <RequireCapability capability="leads.read">
+              <LeadBoardPage />
+            </RequireCapability>
+          }
+        />
+        <Route
+          path="leads/:id"
+          element={
+            <RequireCapability capability="leads.read">
+              <LeadDetailPage />
+            </RequireCapability>
+          }
+        />
       </Route>
 
       {/* Unknown paths go to the dashboard rather than a 404 — every route in
