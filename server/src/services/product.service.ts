@@ -12,6 +12,8 @@ import {
   releaseUsage,
 } from "./mediaUsage.service";
 import { toProductDoc } from "./catalogueMapper";
+import { sanitizeRichText, wouldStrip } from "../utils/richText";
+import { logger } from "../config/logger";
 import { AppError, ErrorCode } from "../utils/AppError";
 import { slugify } from "../utils/slug";
 import type { IProduct } from "../models/Product";
@@ -56,6 +58,7 @@ export const productService = {
 
     const product = await productRepository.create({
       ...toProductDoc(input),
+      ...cleanDescription(input.description, "create"),
       slug,
       categoryName: category.name,
       status: "draft",
@@ -84,7 +87,10 @@ export const productService = {
     const current = await productRepository.findById(id);
     if (!current) throw AppError.notFound("Product not found.");
 
-    const patch: Partial<IProduct> = toProductDoc(input);
+    const patch: Partial<IProduct> = {
+      ...toProductDoc(input),
+      ...cleanDescription(input.description, "update"),
+    };
 
     if (input.slug && input.slug !== current.slug) {
       // See category.service — redirects are Phase 3, so a published slug is
@@ -209,6 +215,9 @@ export const productService = {
 
     const product = await productRepository.create({
       ...copy,
+      // The source is already sanitised, but a row written before S1 shipped
+      // would not be — duplicating must not launder it forward.
+      ...cleanDescription(source.description, "duplicate"),
       name: `${source.name} (copy)`,
       slug,
       // A copy never inherits a published state, and counters start at zero.
@@ -320,6 +329,31 @@ function publishBlockers(product: IProduct): { field: string; message: string }[
  * because an update uses it to clear a reference; nulls are filtered by the
  * caller's existence check.
  */
+/**
+ * SECURITY_TODO S1. `description` is the only field accepting HTML, and it is
+ * sanitised on WRITE — every path, without exception: create, update and
+ * duplicate. Sanitising on render instead would leave an attack payload in
+ * the database for any future consumer that forgets to escape.
+ *
+ * Returns a partial rather than mutating, so an update that does not touch
+ * `description` does not accidentally blank it.
+ * docs/RICH_TEXT_EDITOR_DECISION.md §6
+ */
+function cleanDescription(
+  description: string | undefined,
+  operation: string
+): { description?: string } {
+  if (description === undefined) return {};
+
+  if (wouldStrip(description)) {
+    // Visible rather than silent: a spike here means either a paste from a
+    // rich source or an attempt to post markup directly to the API.
+    logger.warn({ operation }, "Rich text stripped during sanitisation");
+  }
+
+  return { description: sanitizeRichText(description) };
+}
+
 function mediaRefsOf(
   input: CreateProductInput | UpdateProductInput
 ): (string | undefined | null)[] {

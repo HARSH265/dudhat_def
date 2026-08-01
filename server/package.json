@@ -12,7 +12,8 @@
     "seed:admin": "tsc && node dist/scripts/seedAdmin.js",
     "seed:settings": "tsc && node dist/scripts/seedSettings.js",
     "migrate:leads": "tsc && node dist/scripts/migrateContactsToLeads.js",
-    "reconcile:media": "tsc && node dist/scripts/reconcileMediaUsage.js"
+    "reconcile:media": "tsc && node dist/scripts/reconcileMediaUsage.js",
+    "backfill:sanitize": "tsc && node dist/scripts/backfillSanitizeDescriptions.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -31,6 +32,7 @@
     "multer": "^2.2.0",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
+    "sanitize-html": "^2.17.6",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -43,6 +45,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.2.0",
     "@types/node": "^26.1.2",
+    "@types/sanitize-html": "^2.16.1",
     "nodemon": "^3.1.0",
     "typescript": "^7.0.2"
   }

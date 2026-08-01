@@ -1,5 +1,7 @@
 # Project Index
 
+> **New session? Read [PHASE_2F_HANDOVER.md](PHASE_2F_HANDOVER.md) first.** It is the single source of truth for project state and needs no prior conversation.
+
 Routing table. Find your task, read only the listed files.
 
 **Do not read documents not listed for your task.** Every doc here is self-contained on its subject and cross-references the rest by section number — follow a link only when the current file explicitly points you there.
@@ -110,7 +112,7 @@ Source in `src/`, compiled to `dist/`. Run `npm run dev` (watch) or `npm run bui
 
 Facts already established. Trust these instead of re-investigating.
 
-**Phase 0, Phase 1 and Phase 2A–2E are complete.** See §5–10. The admin app lives in `admin/` — see `ADMIN_UI_ARCHITECTURE.md`.
+**Phase 0, Phase 1 and Phase 2A–2F are complete.** See §5–10. The admin app lives in `admin/` — see `ADMIN_UI_ARCHITECTURE.md`.
 
 **Stack:** CRA 5.0.1 (not Vite), **TypeScript 7 backend**, Cloudinary media, 10 collections. No React Query, no Tailwind, no tests, no admin UI yet.
 

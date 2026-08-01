@@ -27,9 +27,9 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/leads", label: "Leads", icon: BarChart3, capability: "leads.read" },
-  { to: "/products", label: "Products", icon: Package, capability: "catalogue.read", comingSoon: true },
-  { to: "/categories", label: "Categories", icon: FolderTree, capability: "catalogue.read", comingSoon: true },
-  { to: "/media", label: "Media", icon: Image, capability: "media.read", comingSoon: true },
+  { to: "/products", label: "Products", icon: Package, capability: "catalogue.read" },
+  { to: "/categories", label: "Categories", icon: FolderTree, capability: "catalogue.read" },
+  { to: "/media", label: "Media", icon: Image, capability: "media.read" },
   { to: "/settings", label: "Settings", icon: Settings, capability: "settings.read", comingSoon: true },
   { to: "/users", label: "Users", icon: Users, capability: "users.read", comingSoon: true },
 ];
@@ -92,11 +92,17 @@ export function AppShell() {
           <p className="truncate text-sm font-medium text-slate-900">{user?.name}</p>
           <p className="truncate text-xs text-slate-500">{user?.email}</p>
           <p className="mt-0.5 text-xs capitalize text-slate-400">{user?.role}</p>
+          <NavLink
+            to="/profile"
+            className="mt-2 block rounded-md px-2 py-1.5 text-sm text-slate-700 hover:bg-slate-100"
+          >
+            Profile &amp; password
+          </NavLink>
           <Button
             variant="ghost"
             size="sm"
             onClick={handleLogout}
-            className="mt-2 w-full justify-start px-2"
+            className="w-full justify-start px-2"
           >
             <LogOut className="h-4 w-4" aria-hidden />
             Sign out

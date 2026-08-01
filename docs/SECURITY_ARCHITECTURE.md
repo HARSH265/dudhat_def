@@ -188,11 +188,21 @@ Any one would mostly do; all three are used because the failure is silent and to
 
 ### XSS
 
+**Implemented in Phase 2F.** The allowlist lives in `server/src/utils/richText.ts` — one module, used by every rich-text field, because two implementations become two allowlists. Editor choice and full rationale: [RICH_TEXT_EDITOR_DECISION.md](RICH_TEXT_EDITOR_DECISION.md).
+
 The rich-text `description` on products and the `richText` section type are the only fields accepting HTML. Both are sanitised **on write** against an allowlist: `p, br, strong, em, u, ul, ol, li, a, h2, h3, h4, blockquote`, with `a` limited to `href`, `title`, `rel`, and `href` restricted to `http`, `https`, `mailto`, `tel`. Everything else is stripped — no `script`, `style`, `iframe`, `on*`, `javascript:` or `data:` URLs.
 
 Sanitising on write rather than on render means the database never holds an attack payload, so a future consumer that forgets to escape is not immediately vulnerable. Rendering still escapes; `dangerouslySetInnerHTML` is permitted only for these sanitised fields and nowhere else.
 
 All other content fields are plain text and React escapes them by default.
+
+**`rel` and `target` on links are forced, not accepted.** An author cannot opt out of `noopener noreferrer nofollow`, and a stored `target` cannot be weaponised.
+
+**Protocol-relative URLs are rejected.** `//evil.example` inherits the page scheme and would otherwise escape the scheme allowlist entirely.
+
+**The editor is defence in depth, not the control.** Tiptap's schema cannot produce a non-allowlisted node, but a request posted directly to `PUT /admin/products/:id` bypasses it. Server-side sanitisation is what protects the database.
+
+**Backfill:** `npm run backfill:sanitize` cleans rows written before this shipped. Idempotent.
 
 ### Lead form abuse
 

@@ -1,11 +1,20 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import type { ReactNode } from "react";
+import { Suspense, lazy, type ReactNode } from "react";
 import { AppShell } from "@/components/common/AppShell";
 import { LoginPage } from "@/features/auth/LoginPage";
 import { DashboardPage } from "@/features/dashboard/DashboardPage";
 import { LeadListPage } from "@/features/leads/LeadListPage";
 import { LeadDetailPage } from "@/features/leads/LeadDetailPage";
 import { LeadBoardPage } from "@/features/leads/LeadBoardPage";
+import { MediaLibraryPage } from "@/features/media/MediaLibraryPage";
+import { CategoryListPage } from "@/features/catalogue/CategoryListPage";
+import { ProductListPage } from "@/features/catalogue/ProductListPage";
+const ProductEditorPage = lazy(() =>
+  import("@/features/catalogue/ProductEditorPage").then((m) => ({
+    default: m.ProductEditorPage,
+  }))
+);
+import { ProfilePage } from "@/features/profile/ProfilePage";
 import { useAuth } from "@/features/auth/AuthProvider";
 import { LoadingState } from "@/components/common/states";
 import { can, type Capability } from "@/lib/permissions";
@@ -107,6 +116,57 @@ export function AppRouter() {
             </RequireCapability>
           }
         />
+
+        <Route
+          path="media"
+          element={
+            <RequireCapability capability="media.read">
+              <MediaLibraryPage />
+            </RequireCapability>
+          }
+        />
+
+        <Route
+          path="categories"
+          element={
+            <RequireCapability capability="catalogue.read">
+              <CategoryListPage />
+            </RequireCapability>
+          }
+        />
+
+        {/* "new" before ":id" so it is not read as an identifier. */}
+        <Route
+          path="products"
+          element={
+            <RequireCapability capability="catalogue.read">
+              <ProductListPage />
+            </RequireCapability>
+          }
+        />
+        <Route
+          path="products/new"
+          element={
+            <RequireCapability capability="catalogue.write">
+              <Suspense fallback={<LoadingState label="Loading editor" />}>
+                <ProductEditorPage />
+              </Suspense>
+            </RequireCapability>
+          }
+        />
+        <Route
+          path="products/:id"
+          element={
+            <RequireCapability capability="catalogue.read">
+              <Suspense fallback={<LoadingState label="Loading editor" />}>
+                <ProductEditorPage />
+              </Suspense>
+            </RequireCapability>
+          }
+        />
+
+        {/* Every authenticated user has a profile — no capability gate. */}
+        <Route path="profile" element={<ProfilePage />} />
       </Route>
 
       {/* Unknown paths go to the dashboard rather than a 404 — every route in

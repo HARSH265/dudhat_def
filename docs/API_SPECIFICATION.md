@@ -474,7 +474,7 @@ Query: `from`, `to` (default: last 30 days). Served from the daily rollup, not r
 | `DELETE` | `/admin/products/:id` | admin | Soft delete |
 | `POST` | `/admin/products/:id/duplicate` | admin, editor | Clone as draft |
 
-**Create/update validation:** `name` required; `slug` auto-generated from `name` if omitted, uniqueness-checked, returns `409 DUPLICATE_SLUG` on collision; `categoryId` must reference a non-deleted category; every `mediaId` must resolve; `description` is sanitised against an HTML allowlist; `specifications[]` validated per [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §4.
+**Create/update validation:** `name` required; `slug` auto-generated from `name` if omitted, uniqueness-checked, returns `409 DUPLICATE_SLUG` on collision; `categoryId` must reference a non-deleted category; every `mediaId` must resolve; **`description` is sanitised against the allowlist in [RICH_TEXT_EDITOR_DECISION.md](RICH_TEXT_EDITOR_DECISION.md) §4–§5 on every write path — create, update and duplicate. Stripping is silent: content outside the allowlist is removed, never rejected, so a paste from Word succeeds with clean output rather than failing validation**; `specifications[]` validated per [PRODUCT_DATA_MODEL.md](PRODUCT_DATA_MODEL.md) §4.
 
 **Publish rules (implemented in Phase 2C).** Publishing requires `primaryImage`, `shortDescription`, at least one specification, and at least one available packaging variant. A `422` lists **every** blocker at once rather than the first — a dialog revealing one problem at a time makes the editor guess how many remain.
 

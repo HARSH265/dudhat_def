@@ -39,6 +39,8 @@
 | [PHASE_1_REVIEW.md](PHASE_1_REVIEW.md) | Phase 1 exit review — 3 high, 6 medium, 11 low |
 | [PHASE_2C_REVIEW.md](PHASE_2C_REVIEW.md) | Phase 2C review — catalogue, publish gate, media usage |
 | [PHASE_2E_SECURITY_REVIEW.md](PHASE_2E_SECURITY_REVIEW.md) | S4/S5 — password change, sessions, invalidation strategy |
+| [PHASE_2F_REVIEW.md](PHASE_2F_REVIEW.md) | Phase 2F review — CMS admin UI, S1 sanitisation, allowlist |
+| **[PHASE_2F_HANDOVER.md](PHASE_2F_HANDOVER.md)** | **Start here in a new session — single source of truth** |
 | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | Superseded — original phase intent |
 
 ## Not Yet Written

@@ -7,6 +7,7 @@ MERN brochure site being converted into a CMS-driven lead generation platform.
 
 ## Start Here
 
+0. New session with no prior context? Read `docs/PHASE_2F_HANDOVER.md` — full project state, no conversation history needed.
 1. Read `docs/PROJECT_INDEX.md` — routing table for which docs a task needs.
 2. Read only what it lists. Usually 1–2 files.
 3. Do not read all documentation. Do not explore the codebase to build context.
@@ -90,8 +91,9 @@ This repo has 39,580 files in `node_modules` and 8.3MB of images. Unfiltered sea
 
 ## Current State — Quick Facts
 
-Client: CRA (not Vite), no React Query, content hardcoded in all 8 pages. **Untouched so far.**
-Server: TypeScript, `src/` → `dist/`, Controller → Service → Repository, JWT auth + RBAC, 7 collections.
-Neither: Cloudinary, tests, admin panel.
+Client: CRA (not Vite), no React Query, **content still hardcoded in all 8 pages** — the CMS exists but nothing consumes it. That is Phase 3 and the largest remaining gap.
+Server: TypeScript 7 (`tsc` only — `ts-node` and `tsx` do not work here), `src/` → `dist/`, Controller → Service → Repository, JWT auth + RBAC, 10 collections, Cloudinary media.
+Admin: Vite + React 19 + TS + Tailwind 4 + Tiptap at `/admin`. Leads, media, catalogue, SEO, profile all working.
+Still missing everywhere: **tests, CI, dependency scanning**.
 
-**Phase 0 and Phase 1 are complete** — see `docs/PROJECT_INDEX.md` §5–7. Next is Phase 2 (admin panel, media, catalogue, lead management) in `docs/IMPLEMENTATION_ROADMAP.md`.
+**Phase 0, Phase 1 and Phase 2 are complete.** The admin panel is functional; the public site still has content hardcoded. Next is Phase 3 (content cutover) — and prerendering must ship **before** content moves to the CMS. See `docs/PHASE_2F_HANDOVER.md` §15.
